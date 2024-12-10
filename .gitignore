@@ -340,3 +340,7 @@ $RECYCLE.BIN/
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocod
+
+# secrets: only secrets-example.json remains
+secrets.json
+
