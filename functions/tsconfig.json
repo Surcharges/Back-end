@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext",
+    "esModuleInterop": true,
+    "moduleResolution": "nodenext",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "outDir": "lib",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2017",
+    "baseUrl": ".",
+    "paths": {
+      "@data/*": ["src/data/*"],
+      "@domain/*": ["src/domain/*"],
+      "@interface/*": ["src/interface/*"],
+    }
+  },
+  "compileOnSave": true,
+  "include": [
+    "src"
+  ]
+  
+}
