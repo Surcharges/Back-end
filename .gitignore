@@ -5,10 +5,14 @@
 .idea
 **/node_modules/*
 **/.firebaserc
+lib/
 
 ### Firebase Patch ###
 .runtimeconfig.json
 .firebase/
+
+### TypeScript v1 declaration files ###
+typings/
 
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
@@ -200,6 +204,8 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+*.local
+package-lock.json
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
