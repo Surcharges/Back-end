@@ -7,18 +7,16 @@ import { places, place } from "@interface/place";
 
 const api = express();
 
-if (process.env.NODE_ENV === 'production') {
-  const cors = require('cors')
+const cors = require('cors')
 
-  const corsOptions = {
-    origin: 'http://bonsung.me',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  }
-
-  api.use(cors(corsOptions))
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }
 
-api.get("/places", places);
-api.get("/place", place);
+api.use(cors(corsOptions))
+
+api.get("/places", places)
+api.get("/place", place)
 
 exports.api = onRequest(api)
