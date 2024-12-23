@@ -1,2 +1,2 @@
-export { getSurcharge } from "./getSurcharge"
-export { postSurcharge } from "./postSurcharge"
+export { getSurcharge } from "./getSurchargeInterface"
+export { postSurcharge } from "./postSurchargeInterface"
