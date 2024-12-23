@@ -1,5 +1,9 @@
 {
   "projects": {
-    "default": "surcharges"
-  }
+    "default": "surcharges",
+    "dev": "surcharges",
+    "prod": "surcharges"
+  },
+  "targets": {},
+  "etags": {}
 }
