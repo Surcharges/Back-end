@@ -1,5 +1,5 @@
-import { SurchargeDTO } from "../DTO/SurchargeDTO";
-import { db } from "src"; 
+import { SurchargeDTO } from "../DTO/SurchargeDTO"
+import { db } from "@src/index" 
 
 export async function GetSurchargeRepo(id: string): Promise<SurchargeDTO> {
   try {
