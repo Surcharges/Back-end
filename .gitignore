@@ -4,7 +4,6 @@
 ### Firebase ###
 .idea
 **/node_modules/*
-**/.firebaserc
 lib/
 
 ### Firebase Patch ###
@@ -239,6 +238,7 @@ web_modules/
 
 # dotenv environment variable files
 .env
+.env.*
 .env.dev
 .env.prod
 .env.development.local
