@@ -14,6 +14,7 @@
       "@data/*": ["src/data/*"],
       "@domain/*": ["src/domain/*"],
       "@interface/*": ["src/interface/*"],
+      "@src/*": ["src/*"],
     }
   },
   "compileOnSave": true,
