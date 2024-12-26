@@ -1,1 +1,2 @@
-export { getSurchargeUsecase } from "./getSurcharge/usecases/getSurchargeUsecase"
+export { getSurchargeUsecase } from "./usecases/getSurchargeUsecase"
+export { postSurchargeUsecase } from "./usecases/postSurchargeUsecase"
