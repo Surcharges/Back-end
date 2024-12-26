@@ -1,7 +1,7 @@
 import { SurchargeDTO } from "../DTO/SurchargeDTO";
 import { db } from "@src/index";
 
-export async function postSurchargeRepo(Surcharge: SurchargeDTO): Promise<void> {
+export async function PostSurchargeRepo(Surcharge: SurchargeDTO): Promise<void> {
     try {
         const docRef = db.collection('surcharges').doc(Surcharge.placeInformation);
 
