@@ -5,7 +5,7 @@ export async function GetSurchargeRepo(id: string): Promise<SurchargeDTO> {
   try {
 
     let placeId = id
-    const surchargeReq = await db.collection('surcharge')
+    const surchargeReq = await db.collection('surcharges')
     .where("placeInformation", "==", placeId)
     .get()
     // const doc = await db.collection("surcharges").doc(id).get();
