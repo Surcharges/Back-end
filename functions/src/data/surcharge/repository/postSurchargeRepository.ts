@@ -1,8 +1,9 @@
-import { SurchargeDTO } from "../DTO/SurchargeDTO";
+import { PostSurchargeDTO } from "../DTO/PostSurchargeDTO";
 import { database } from "@data/firebase";
 import { storage } from "@data/firebase";
+import { Timestamp } from "firebase-admin/firestore";
 
-export async function PostSurchargeRepo(Surcharge: SurchargeDTO): Promise<void> {
+export async function PostSurchargeRepo(Surcharge: PostSurchargeDTO): Promise<void> {
     try {
         const docRef = database.collection('surcharges').doc(Surcharge.placeInformation);
 
@@ -16,7 +17,7 @@ export async function PostSurchargeRepo(Surcharge: SurchargeDTO): Promise<void> 
             picture: Surcharge.picture || undefined,
             placeInformation: Surcharge.placeInformation, // Fixed to use the correct property
             rate: Surcharge.rate,
-            reportedDate: Surcharge.reportedDate || undefined,
+            reportedDate: Timestamp.now(),
             totalAmount: Surcharge.totalAmount || undefined,
             surchargeAmount: Surcharge.surchargeAmount || undefined,
             purchaseAmount: Surcharge.purchaseAmount || undefined

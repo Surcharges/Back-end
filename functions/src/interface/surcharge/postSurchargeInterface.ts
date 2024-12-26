@@ -2,6 +2,7 @@ import express from "express";
 import { postSurchargeUsecase } from "@domain/surcharge"
 import {Response} from "express";
 import { SurchargeDTO } from "@data/surcharge"
+import {PostSurchargeRequest} from "@domain/surcharge/entities/PostSurchargeRequest"
 
 interface CustomRequest extends express.Request {
   // body: Partial<SurchargeDTO>; // Body may not have all properties yet
@@ -11,7 +12,7 @@ interface CustomRequest extends express.Request {
 export const postSurchargeInterface = async (req: CustomRequest, res: Response): Promise<void> => {
   try {
       // Extract and validate required fields
-      const { id, picture, placeInformation, rate, reportedDate, totalAmount, surchargeAmount, purchaseAmount } = req.body;
+      const { id, picture, placeInformation, rate, totalAmount, surchargeAmount, purchaseAmount } = req.body;
 
       // if (!id || !placeInformation || rate === undefined || !reportedDate) {
       //     res.status(400).send({ message: "Missing required fields in request body." });
@@ -19,12 +20,11 @@ export const postSurchargeInterface = async (req: CustomRequest, res: Response):
       // }
 
       // Map the incoming data to SurchargeDTO
-      const surcharge: SurchargeDTO = {
+      const surcharge: PostSurchargeRequest = {
           id,
           picture,
           placeInformation,
           rate,
-          reportedDate,
           totalAmount,
           surchargeAmount,
           purchaseAmount,

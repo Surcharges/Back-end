@@ -15,7 +15,6 @@ const corsOptions = {
 }
 
 api.use(cors(corsOptions))
-api.use(Auth)
 
 api.get("/places", places);
 api.get("/place", place);

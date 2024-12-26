@@ -1,4 +1,4 @@
-import { SurchargeDTO } from "../DTO/SurchargeDTO"
+import { SurchargeDTO } from "../DTO/GetSurchargeDTO"
 import { database } from "@data/firebase"
 
 export async function GetSurchargeRepo(id: string): Promise<SurchargeDTO> {
