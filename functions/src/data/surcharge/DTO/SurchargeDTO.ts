@@ -1,9 +1,9 @@
 import { Timestamp } from "firebase-admin/firestore";
-import { ImageDataDTO } from "./imageDataDTO"
+// import { ImageDataDTO } from "./imageDataDTO"
 
 export type SurchargeDTO = {
     id: string,
-    picture?: ImageDataDTO[],
+    picture: string,
     placeInformation: string;
     rate: number,
     reportedDate: Timestamp 

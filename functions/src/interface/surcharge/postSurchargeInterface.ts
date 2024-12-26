@@ -4,7 +4,8 @@ import {Response} from "express";
 import { SurchargeDTO } from "@data/surcharge"
 
 interface CustomRequest extends express.Request {
-  body: Partial<SurchargeDTO>; // Body may not have all properties yet
+  // body: Partial<SurchargeDTO>; // Body may not have all properties yet
+  body: SurchargeDTO
 }
 
 export const postSurchargeInterface = async (req: CustomRequest, res: Response): Promise<void> => {
@@ -12,10 +13,10 @@ export const postSurchargeInterface = async (req: CustomRequest, res: Response):
       // Extract and validate required fields
       const { id, picture, placeInformation, rate, reportedDate, totalAmount, surchargeAmount, purchaseAmount } = req.body;
 
-      if (!id || !placeInformation || rate === undefined || !reportedDate) {
-          res.status(400).send({ message: "Missing required fields in request body." });
-          return;
-      }
+      // if (!id || !placeInformation || rate === undefined || !reportedDate) {
+      //     res.status(400).send({ message: "Missing required fields in request body." });
+      //     return;
+      // }
 
       // Map the incoming data to SurchargeDTO
       const surcharge: SurchargeDTO = {

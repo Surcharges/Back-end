@@ -1,10 +1,16 @@
 import { SurchargeDTO } from "../DTO/SurchargeDTO";
-import { db } from "@src/index";
+import { database } from "@data/firebase";
+import { storage } from "@data/firebase";
 
 export async function PostSurchargeRepo(Surcharge: SurchargeDTO): Promise<void> {
     try {
-        const docRef = db.collection('surcharges').doc(Surcharge.placeInformation);
+        const docRef = database.collection('surcharges').doc(Surcharge.placeInformation);
 
+        const buffer = Buffer.from(Surcharge.picture, 'base64')
+
+        const file = storage.bucket().file('/image.jpg')
+        await file.save(buffer, { contentType: 'image/jpeg' })
+    
         await docRef.set({
             id: Surcharge.id || undefined,
             picture: Surcharge.picture || undefined,

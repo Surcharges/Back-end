@@ -14,12 +14,11 @@
       "@data/*": ["src/data/*"],
       "@domain/*": ["src/domain/*"],
       "@interface/*": ["src/interface/*"],
-      "@src/*": ["src/*"],
-    }
+    },
+    "skipLibCheck": true, //when this issue is merged, remove this line: https://github.com/dcodeIO/long.js/pull/130
   },
   "compileOnSave": true,
   "include": [
     "src"
   ]
-  
 }

@@ -1,21 +1,26 @@
 import { SurchargeDTO } from "../DTO/SurchargeDTO"
-import { db } from "@src/index" 
+import { database } from "@data/firebase"
 
 export async function GetSurchargeRepo(id: string): Promise<SurchargeDTO> {
   try {
 
     let placeId = id
-    const surchargeReq = await db.collection('surcharges')
-    .where("placeInformation", "==", placeId)
-    .get()
+    const place = await database.collection('surcharges').doc(id).get()
+
+    // .where("placeInformation", "==", placeId)
+    // .get()
+
     // const doc = await db.collection("surcharges").doc(id).get();
 
-    if (surchargeReq.empty) {
-        console.error(`Surcharge with place id ${placeId} not found.`);
-    }
+    // if (surchargeReq.empty) {
+    //     console.error(`Surcharge with place id ${placeId} not found.`);
+    // }
 
-    const surcharge = surchargeReq.docs[0]
-    const data = surcharge.data();
+    // const surcharge = await surchargeReq.get()
+    const data = place.data();
+
+    console.log(data)
+    
     if (!data) {
         throw new Error("Data is undefined for the given surcharge.");
     }
@@ -30,6 +35,8 @@ export async function GetSurchargeRepo(id: string): Promise<SurchargeDTO> {
         surchargeAmount: data.surchargeAmount,
         purchaseAmount: data.purchaseAmount,
     };
+
+    console.log("Surcharge fetched successfully:", result);
 
     return result;
 } catch (error) {

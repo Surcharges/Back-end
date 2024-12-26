@@ -2,13 +2,8 @@ require('module-alias/register')
 
 import { onRequest } from "firebase-functions/v2/https";
 import express from "express";
-import admin from "firebase-admin";
 import { places, place } from "@interface/place";
 import { getSurchargeInterface, postSurchargeInterface } from "@interface/surcharge";
-
-
-admin.initializeApp();
-export const db = admin.firestore();
 
 const api = express();
 
@@ -20,10 +15,11 @@ const corsOptions = {
 }
 
 api.use(cors(corsOptions))
+api.use(Auth)
 
 api.get("/places", places);
 api.get("/place", place);
-api.get("/api/surcharge", getSurchargeInterface)
-api.post("/api/surcharge", postSurchargeInterface)
+api.get("/surcharge", getSurchargeInterface)
+api.post("/surcharge", postSurchargeInterface)
 
 exports.api = onRequest(api)

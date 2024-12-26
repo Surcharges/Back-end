@@ -1,7 +1,8 @@
 // import { Request } from "../entities/Request"
 import { PostSurchargeRepo, SurchargeDTO } from "@data/surcharge"
+import { PostSurchargeResponse } from '../entities/PostSurchargesResponse'
 
-export const postSurchargeUsecase = async (request: SurchargeDTO): Promise<void> => {
+export const postSurchargeUsecase = async (request: SurchargeDTO): Promise<PostSurchargeResponse> => {
   try {
       // Map the Request object to SurchargeDTO
       const surcharge: SurchargeDTO = {
@@ -17,6 +18,10 @@ export const postSurchargeUsecase = async (request: SurchargeDTO): Promise<void>
 
       // Call the repository function
       await PostSurchargeRepo(surcharge);
+
+      return {
+        
+      }
   } catch (error) {
       console.error("Error in use case:", error);
       throw error;
