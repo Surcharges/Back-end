@@ -1,4 +1,4 @@
-import { SurchargeDTO } from "./SurchargeDTO";
+import { SurchargeDTO } from "./GetSurchargeDTO";
 
 export type ResponseDTO = {
   places: SurchargeDTO[],
