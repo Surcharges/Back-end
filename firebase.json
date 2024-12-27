@@ -14,5 +14,19 @@
         "npm --prefix \"$RESOURCE_DIR\" run build"
       ]
     }
-  ]
+  ],
+  "storage": {
+    "rules": "./functions/emulators/storage/storage.rules"
+  },
+  "emulators": {
+    "functions": {
+      "port": 5001
+    },
+    "firestore": {
+      "port": 5002
+    },
+    "storage": {
+      "port": 5003
+    }
+  }
 }
