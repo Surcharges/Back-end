@@ -1,8 +1,9 @@
 import express from "express";
 import { postSurchargeUsecase } from "@domain/surcharge"
 import { Response } from "express";
-import { PostSurchargeInterfaceRequest } from "./models/PostSurchargeInterfaceRequest";
-import { PostSurchargeUsecaseRequest } from "@domain/surcharge";
+import { PostSurchargeInterfaceRequest } from "@interface/surcharge/post/models/PostSurchargeInterfaceRequest"
+import { PostSurchargeUsecaseRequest } from "@domain/surcharge"
+import { rateCalculatorHelper } from "../helpers/rateCalculatorHelper";
 
 interface CustomRequest extends express.Request {
   // body: Partial<SurchargeDTO>; // Body may not have all properties yet
@@ -12,14 +13,11 @@ interface CustomRequest extends express.Request {
 export const postSurchargeInterface = async (req: CustomRequest, res: Response): Promise<void> => {
   try {
     // Extract and validate required fields
-    const { id, picture, rate, totalAmount, surchargeAmount } = req.body;
+    let { id, picture, rate, totalAmount, surchargeAmount } = req.body;
 
-    // if (!id || !placeInformation || rate === undefined || !reportedDate) {
-    //     res.status(400).send({ message: "Missing required fields in request body." });
-    //     return;
-    // }
+    rate = rateCalculatorHelper(rate, totalAmount, surchargeAmount);
 
-    // Map the incoming data to SurchargeDTO
+    // Map the incoming data to PostSurchargeUsecaseRequest
     const surcharge: PostSurchargeUsecaseRequest = {
       id,
       picture,

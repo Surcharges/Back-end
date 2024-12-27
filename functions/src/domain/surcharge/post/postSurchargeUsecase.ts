@@ -4,7 +4,7 @@ import { PostSurchargeRepositoryRequest } from "@data/surcharge";
 
 export const postSurchargeUsecase = async (request: PostSurchargeUsecaseRequest): Promise<void> => {
   try {
-      // Map the Request object to SurchargeDTO
+      // Map the Request object to PostSurchargeRepositoryRequest
       const surcharge: PostSurchargeRepositoryRequest = {
           id: request.id,
           picture: request.picture,
