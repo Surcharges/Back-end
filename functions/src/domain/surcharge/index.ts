@@ -1,2 +1,3 @@
-export { getSurchargeUsecase } from "./usecases/getSurchargeUsecase"
-export { postSurchargeUsecase } from "./usecases/postSurchargeUsecase"
+export { getSurchargeUsecase } from "./get/getSurchargeUsecase"
+export { postSurchargeUsecase } from "./post/postSurchargeUsecase"
+export { PostSurchargeUsecaseRequest } from './post/entity/PostSurchargeUsecaseRequest'

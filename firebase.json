@@ -23,10 +23,10 @@
       "port": 5001
     },
     "firestore": {
-      "port": 8080
+      "port": 5002
     },
     "storage": {
-      "port": 9199
+      "port": 5003
     }
   }
 }

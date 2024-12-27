@@ -1,2 +1,2 @@
-export { place } from "./place"
-export { places } from "./places"
+export { getPlaceInterface } from "./get/place/getPlaceInterface"
+export { getPlacesInterface } from "./get/places/getPlacesInterface"
