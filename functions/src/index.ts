@@ -16,8 +16,8 @@ const corsOptions = {
 
 api.use(cors(corsOptions))
 
-api.get("/places", getPlaceInterface);
-api.get("/place", getPlacesInterface);
+api.get("/place", getPlaceInterface);
+api.get("/places", getPlacesInterface);
 api.get("/surcharge", getSurchargeInterface)
 api.post("/surcharge", postSurchargeInterface)
 
