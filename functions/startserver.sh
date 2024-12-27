@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Delele the exsisting lib
-rm -rf ./functions/lib
+rm -rf ./lib
 
 # Run the build command
 npm run build
