@@ -1,11 +1,10 @@
 import { GetSurchargeRepositoryResponse } from './DTO/GetSurchargeRepositoryResponse'
 import { database } from "@data/firebase"
-import { storage } from "@data/firebase"
 
 
 export async function GetSurchargeRepo(placeId: string): Promise<GetSurchargeRepositoryResponse> {
   try {
-    const dbRef = database.collection('surcharges')    
+    const dbRef = database.collection('surcharge')    
     const docRef = dbRef.doc(placeId)
     const doc = await docRef.get()
     const data = doc.data()

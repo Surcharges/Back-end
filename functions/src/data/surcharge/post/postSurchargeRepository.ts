@@ -6,7 +6,7 @@ import { Timestamp } from "firebase-admin/firestore"
 
 export async function PostSurchargeRepo(request: PostSurchargeRepositoryRequest): Promise<void> {
   try {
-    const docRef = database.collection('surcharges').doc(request.placeId);
+    const docRef = database.collection('surcharge').doc(request.placeId);
 
     const buffer = Buffer.from(request.image, 'base64')
     const { v4: uuid } = require('uuid')
