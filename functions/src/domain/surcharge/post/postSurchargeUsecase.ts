@@ -6,8 +6,8 @@ export const postSurchargeUsecase = async (request: PostSurchargeUsecaseRequest)
   try {
       // Map the Request object to PostSurchargeRepositoryRequest
       const surcharge: PostSurchargeRepositoryRequest = {
-          id: request.id,
-          picture: request.picture,
+          placeId: request.placeId,
+          image: request.image,
           rate: request.rate,
           totalAmount: request.totalAmount,
           surchargeAmount: request.surchargeAmount

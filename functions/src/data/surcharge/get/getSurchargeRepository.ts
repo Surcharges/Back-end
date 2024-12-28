@@ -1,17 +1,19 @@
 import { GetSurchargeRepositoryResponse } from './DTO/GetSurchargeRepositoryResponse'
 import { database } from "@data/firebase"
+import { storage } from "@data/firebase"
+
 
 export async function GetSurchargeRepo(placeId: string): Promise<GetSurchargeRepositoryResponse> {
   try {
-
-    const place = await database.collection('surcharges').doc(placeId).get()
-
-    const data = place.data();
+    const dbRef = database.collection('surcharges')    
+    const docRef = dbRef.doc(placeId)
+    const doc = await docRef.get()
+    const data = doc.data()
 
     if (!data) {
       throw new Error("Data is undefined for the given surcharge.");
     }
-
+    
     const result: GetSurchargeRepositoryResponse = {
       id: data.id,
       picture: data.picture, // Map picture field if present
@@ -21,10 +23,11 @@ export async function GetSurchargeRepo(placeId: string): Promise<GetSurchargeRep
       totalAmount: data.totalAmount,
       surchargeAmount: data.surchargeAmount,
     };
-
+  
     console.log("Surcharge fetched successfully:", result);
-
+  
     return result;
+    
   } catch (error) {
     console.error("Error fetching surcharge:", error);
     throw error;

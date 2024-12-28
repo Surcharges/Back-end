@@ -6,21 +6,20 @@ import { PostSurchargeUsecaseRequest } from "@domain/surcharge"
 import { rateCalculatorHelper } from "../helpers/rateCalculatorHelper";
 
 interface CustomRequest extends express.Request {
-  // body: Partial<SurchargeDTO>; // Body may not have all properties yet
   body: PostSurchargeInterfaceRequest
 }
 
 export const postSurchargeInterface = async (req: CustomRequest, res: Response): Promise<void> => {
   try {
     // Extract and validate required fields
-    let { id, picture, rate, totalAmount, surchargeAmount } = req.body;
+    let { placeId, image, rate, totalAmount, surchargeAmount } = req.body;
 
     rate = rateCalculatorHelper(rate, totalAmount, surchargeAmount);
 
     // Map the incoming data to PostSurchargeUsecaseRequest
     const surcharge: PostSurchargeUsecaseRequest = {
-      id,
-      picture,
+      placeId,
+      image,
       rate,
       totalAmount,
       surchargeAmount,

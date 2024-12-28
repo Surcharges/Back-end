@@ -6,18 +6,20 @@ import { Timestamp } from "firebase-admin/firestore"
 
 export async function PostSurchargeRepo(request: PostSurchargeRepositoryRequest): Promise<void> {
   try {
-    const docRef = database.collection('surcharges').doc(request.id);
+    const docRef = database.collection('surcharges').doc(request.placeId);
 
-    const buffer = Buffer.from(request.picture, 'base64')
-
+    const buffer = Buffer.from(request.image, 'base64')
     const { v4: uuid } = require('uuid')
     const fileName = `${uuid()}.jpg`
-
     const file = storage.bucket().file(fileName)
     await file.save(buffer, { contentType: 'image/jpeg' })
 
+    const placeInformation = 'place/' + request.placeId.toString()
+
     await docRef.set({
-      picture: fileName,
+      id: request.placeId,
+      image: fileName,
+      placeInformation: placeInformation,
       rate: request.rate,
       reportedDate: Timestamp.now(),
       totalAmount: request.totalAmount,
