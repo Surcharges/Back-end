@@ -1,6 +1,6 @@
 export type PostSurchargeInterfaceRequest = {
   placeId: string,
-  image: string,
+  image: File,
   rate?: number,
   totalAmount?: number,
   surchargeAmount?: number

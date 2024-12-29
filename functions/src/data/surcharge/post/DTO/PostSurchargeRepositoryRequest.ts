@@ -1,8 +1,19 @@
+interface location {
+  latitude: number,
+  longitude: number
+}
+  
+interface CustomRequestPlace {
+  id: string;
+  name: string,
+  address: string,
+  location: location
+}
 
 export type PostSurchargeRepositoryRequest = {
-    placeId: string,
-    image: string,
-    rate: number,
-    totalAmount?: number,
-    surchargeAmount?: number,
+  place: CustomRequestPlace,
+  image: string,
+  rate: number,
+  totalAmount?: number,
+  surchargeAmount?: number,
 }
