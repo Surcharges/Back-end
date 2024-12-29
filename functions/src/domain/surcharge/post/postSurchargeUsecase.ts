@@ -6,7 +6,6 @@ import { rateCalculatorHelper } from "../helpers/rateCalculatorHelper";
 export const postSurchargeUsecase = async (request: PostSurchargeUsecaseRequest): Promise<void> => {
   try {
   
-
     // Map the Request object to PostSurchargeRepositoryRequest
     const rate = rateCalculatorHelper(
       request.rate ?? 0, // Default to 0 if undefined
@@ -15,7 +14,7 @@ export const postSurchargeUsecase = async (request: PostSurchargeUsecaseRequest)
     )
     
     const surcharge: PostSurchargeRepositoryRequest = {
-        placeId: request.placeId,
+        place: request.place,
         image: request.image,
         rate: rate,
         totalAmount: request.totalAmount ?? 0,
