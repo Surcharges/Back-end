@@ -14,8 +14,6 @@ export async function GetSurchargeRepo(placeId: string): Promise<GetSurchargeRep
     }
     
     const result: GetSurchargeRepositoryResponse = {
-      id: data.id,
-      picture: data.picture, // Map picture field if present
       placeInformation: data.placeInformation, // Convert Firestore reference to string
       rate: data.rate,
       reportedDate: data.reportedDate, // Keep as Firestore Timestamp
