@@ -35,7 +35,7 @@ export async function GetPlacesRepository(searchText: string, nextPageToken?: st
     headers: {
       'Content-Type': 'application/json',
       'X-Goog-Api-Key': process.env.GOOGLE_MAPS_API_KEY ?? '',
-      'X-Goog-FieldMask': "nextPageToken,places.id,places.displayName,places,places.addressComponents",
+      'X-Goog-FieldMask': "nextPageToken,places.id,places.displayName,places.addressComponents",
     },
     body: body
   })
