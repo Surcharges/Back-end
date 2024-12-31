@@ -3,7 +3,7 @@ interface LatLngDTO {
   longitude: number
 }
 
-interface LocalizedTextDTO {
+interface displayName {
   text: string,
   languageCode: string
 }
@@ -17,7 +17,7 @@ interface AddressComponentsDTO {
 
 export interface CustomRequestPlace {
   id: string;
-  displayName: LocalizedTextDTO,
-  addressComponents: AddressComponentsDTO,
+  displayName: displayName,
+  addressComponents: AddressComponentsDTO[],
   location: LatLngDTO
 }
