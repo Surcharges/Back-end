@@ -1,3 +1,5 @@
+import { Request } from "express";
+
 interface LatLngDTO {
   latitude: number,
   longitude: number
@@ -21,11 +23,13 @@ interface CustomRequestPlace {
   addressComponents: AddressComponentsDTO,
   location: LatLngDTO
 }
-  
-export type PostSurchargeUsecaseRequest = {
-    place: CustomRequestPlace,
-    image: string,
-    rate?: number,
-    totalAmount?: number,
-    surchargeAmount?: number,
+
+export interface customRequest extends Request {
+  body: {
+      place: CustomRequestPlace,
+      image: string,
+      rate?: number;
+      totalAmount?: number;
+      surchargeAmount?: number;
+    };
 }

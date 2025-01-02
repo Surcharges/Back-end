@@ -7,8 +7,6 @@ export const getSurchargeUsecase = async (request: GetSurchargeUsecaseRequest): 
   const result = await GetSurchargeRepo(request.placeId)
 
   return {
-    id: result.id,
-    picture: result.picture,
     placeInformation: result.placeInformation,
     rate: result.rate,
     reportedDate: result.reportedDate.toMillis(),

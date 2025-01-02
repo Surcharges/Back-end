@@ -15,8 +15,6 @@ export const getSurchargeInterface = async (req: express.Request, res: express.R
     const surcharge = await getSurchargeUsecase({ placeId: placeId })
     
     res.status(200).send({
-      id: surcharge.id,
-      picture: surcharge.picture,
       placeInformation: surcharge.placeInformation,
       rate: surcharge.rate,
       reportedDate: surcharge.reportedDate,

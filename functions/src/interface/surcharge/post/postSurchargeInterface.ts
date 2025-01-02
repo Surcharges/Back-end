@@ -1,31 +1,30 @@
-import express from "express";
+import { customRequest } from "./customRequest/customRequest"
 import { postSurchargeUsecase } from "@domain/surcharge"
 import { Response } from "express";
-import { PostSurchargeInterfaceRequest } from "./models/PostSurchargeInterfaceRequest";
-import { PostSurchargeUsecaseRequest } from "@domain/surcharge";
+import { PostSurchargeUsecaseRequest } from "@domain/surcharge"
 
-interface CustomRequest extends express.Request {
-  // body: Partial<SurchargeDTO>; // Body may not have all properties yet
-  body: PostSurchargeInterfaceRequest
-}
-
-export const postSurchargeInterface = async (req: CustomRequest, res: Response): Promise<void> => {
+export const postSurchargeInterface = async (req: customRequest, res: Response): Promise<void> => {
   try {
-    // Extract and validate required fields
-    const { id, picture, rate, totalAmount, surchargeAmount } = req.body;
 
-    // if (!id || !placeInformation || rate === undefined || !reportedDate) {
-    //     res.status(400).send({ message: "Missing required fields in request body." });
-    //     return;
-    // }
+    let { place, image, rate, totalAmount, surchargeAmount } = req.body;
 
-    // Map the incoming data to SurchargeDTO
+    let isRate = false;
+    if(rate === undefined){isRate = false} else isRate = true
+    let isAmount = false;
+    if(totalAmount === undefined ||
+      surchargeAmount === undefined){isAmount = false} else isAmount = true
+    if(!isRate && !isAmount){
+      throw new Error("Insufficient parameters provided for rate calculation.")
+    }
+
+
+    // Map the incoming data to PostSurchargeUsecaseRequest
     const surcharge: PostSurchargeUsecaseRequest = {
-      id,
-      picture,
-      rate,
-      totalAmount,
-      surchargeAmount,
+      place: place,
+      image: image,
+      rate: rate,
+      totalAmount: totalAmount,
+      surchargeAmount: surchargeAmount
     };
 
     // Call the use case
