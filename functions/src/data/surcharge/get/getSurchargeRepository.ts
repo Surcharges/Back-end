@@ -4,13 +4,13 @@ import { database } from "@data/firebase"
 
 export async function GetSurchargeRepo(placeId: string): Promise<GetSurchargeRepositoryResponse> {
   try {
-    const dbRef = database.collection('surcharge')    
+    const dbRef = database.collection('surcharges')    
     const docRef = dbRef.doc(placeId)
     const doc = await docRef.get()
     const data = doc.data()
 
     if (!data) {
-      throw new Error("Data is undefined for the given surcharge.");
+      throw new Error("Data is undefined for the given place.");
     }
     
     const result: GetSurchargeRepositoryResponse = {
