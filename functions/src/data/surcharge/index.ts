@@ -1,6 +1,5 @@
-export { GetSurchargeRepo } from "./get/getSurchargeRepository"
+export { GetSurchargesRepository } from './get/getSurchargesRepository'
 export { PostSurchargeRepo } from "./post/postSurchargeRepository"
-export { GetSurchargeRepositoryFromGetPlaces } from "./get/getSurchargeRepositoryFromGetPlaces"
-export { GetSurchargeRepositoryResponse } from './get/DTO/GetSurchargeRepositoryResponse'
+
+export { GetSurchargesRepositoryResponse } from './get/DTO/GetSurchargesRepositoryResponse'
 export { PostSurchargeRepositoryRequest } from './post/DTO/PostSurchargeRepositoryRequest'
-export { GetSurchargeRepositoryFromGetPlacesResponse } from './get/DTO/GetSurchargeRepositoryFromGetPlacesResponse'

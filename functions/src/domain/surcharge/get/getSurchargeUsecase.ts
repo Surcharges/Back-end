@@ -1,10 +1,10 @@
-import { GetSurchargeRepo } from "@data/surcharge"
+import { GetSurchargesRepository } from "@data/surcharge"
 import { GetSurchargeUsecaseRequest } from "./entity/GetSurchargeUsecaseRequest"
 import { GetSurchargeUsecaseResponse } from "./entity/GetSurchargeUsecaseResponse"
 
 export const getSurchargeUsecase = async (request: GetSurchargeUsecaseRequest): Promise<GetSurchargeUsecaseResponse> => {
 
-  const result = await GetSurchargeRepo(request.placeId)
+  const result = await GetSurchargesRepository(request.placeId)
 
   return {
     placeInformation: result.placeInformation,
