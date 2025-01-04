@@ -23,6 +23,11 @@ export async function GetPlaceRepository(id: string): Promise<getPlaceFullReposi
       }
 
       const externalData = await response.json();
+      console.log("externalData: ",externalData)
+
+      const placesRef = database.collection('places').doc(id);
+      await placesRef.set(formatPlaceData(externalData))
+
       return {...formatPlaceData(externalData)}
     } else {
       // If data exists in Firestore
