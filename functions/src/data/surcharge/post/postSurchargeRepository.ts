@@ -15,10 +15,7 @@ export async function PostSurchargeRepo(request: PostSurchargeRepositoryRequest)
     
     const placeDocCheck = await database.collection('places').doc(request.place.id).get();
     if(!placeDocCheck.exists){
-      console.log("requestId: ", request.place.id)
       GetPlaceRepository(request.place.id)
-      // const placesRef = database.collection('places').doc(request.place.id);
-      // await placesRef.set(request.place)
     }
     
     const buffer = Buffer.from(request.image, 'base64')
