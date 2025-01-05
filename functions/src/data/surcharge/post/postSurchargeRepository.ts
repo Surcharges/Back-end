@@ -3,7 +3,6 @@ import { database } from "@data/firebase"
 import { storage } from "@data/firebase"
 import { Timestamp } from "firebase-admin/firestore"
 import { GeoPoint } from "firebase-admin/firestore";
-import { PostPlaceRepository } from '@data/place/post/place/PostPlaceRepository'
 
 export async function PostSurchargeRepo(request: PostSurchargeRepositoryRequest): Promise<void> {
   try {
@@ -11,14 +10,7 @@ export async function PostSurchargeRepo(request: PostSurchargeRepositoryRequest)
     const locationGeoPoint = new GeoPoint(request.place.location.latitude, request.place.location.longitude)
     request.place.location = locationGeoPoint
 
-    const surchargesRef = database.collection('surcharges').doc(request.place.id);
-    
-    const placeDocCheck = await database.collection('places').doc(request.place.id).get();
-    if(!placeDocCheck.exists){
-      PostPlaceRepository(request.place.id)
-      database.collection('places').doc(request.place.id).set(request.place)
-    }
-    
+    const surchargesRef = database.collection('surcharges').doc(request.place.id); 
     const buffer = Buffer.from(request.image, 'base64')
     const { v4: uuid } = require('uuid')
     const fileName = `${uuid()}.jpg`
