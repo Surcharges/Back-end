@@ -1,4 +1,6 @@
 export { GetPlacesRepositoryResponse } from './get/places/DTO/GetPlacesRepositoryResponse'
+export { PostPlaceRepositoryRequest } from './post/place/DTO/PostPlaceRepositoryRequest'
 export { PlaceDTO } from './get/place/DTO/PlaceDTO'
 export { GetPlacesRepository } from './get/places/GetPlacesRepository'
 export { GetPlaceRepository } from './get/place/GetPlaceRepository'
+export { PostPlaceRepository } from './post/place/PostPlaceRepository'

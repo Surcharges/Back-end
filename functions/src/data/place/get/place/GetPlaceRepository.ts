@@ -1,6 +1,8 @@
-import { CustomRequestPlace } from './DTO/GetPlaceRepositoryResponse';
+import { formatPlaceData } from './Helpers/formatPlaceData'
 import {getPlaceFullRepositoryResponse} from './DTO/GetPlaceFullRepositoryResponse'
 import { database } from '@data/firebase';
+import { PostPlaceRepository } from '@data/place'
+import { GetSurchargesRepository } from '@data/surcharge'
 
 export async function GetPlaceRepository(id: string): Promise<getPlaceFullRepositoryResponse> {
   try {
@@ -8,7 +10,7 @@ export async function GetPlaceRepository(id: string): Promise<getPlaceFullReposi
     const placeDoc = await database.collection('places').doc(id).get();
 
     if (!placeDoc.exists) {
-      // If no data in Firestore, fetch from external API
+      // If no data in Firestore, fetch from external Google Places API
       const response = await fetch(`https://places.googleapis.com/v1/places/${id}`, {
         method: 'GET',
         headers: {
@@ -21,23 +23,18 @@ export async function GetPlaceRepository(id: string): Promise<getPlaceFullReposi
       if (!response.ok) {
         throw new Error('Network response was not okay');
       }
-
       const externalData = await response.json();
+      await PostPlaceRepository(formatPlaceData(externalData))
       return {...formatPlaceData(externalData)}
+
     } else {
-      // If data exists in Firestore
       const placeData = placeDoc.data();
-      if (!placeData) {
-        throw new Error('Firestore data is empty or undefined');
-      }
-
-      const surchargeDoc = await database.collection('surcharges').doc(id).get();
-      const surchargeData = surchargeDoc.exists ? surchargeDoc.data() : {};
-
+      const surchargeData = await GetSurchargesRepository(id);
+      
       return {
         ...formatPlaceData(placeData),
-        rate: surchargeData?.rate ?? null,
-        reportedDate: surchargeData?.reportedDate ?? null,
+        rate: surchargeData?.rate,
+        reportedDate: surchargeData?.reportedDate,
       };
     }
   } catch (error) {
@@ -46,22 +43,3 @@ export async function GetPlaceRepository(id: string): Promise<getPlaceFullReposi
   }
 }
 
-function formatPlaceData(data: any): CustomRequestPlace {
-  return {
-    id: data.id,
-    displayName: {
-      text: data.displayName?.text ?? '',
-      languageCode: data.displayName?.languageCode ?? '',
-    },
-    addressComponents: (data.addressComponents ?? []).map((component: any) => ({
-      longText: component.longText,
-      shortText: component.shortText,
-      types: component.types,
-      languageCode: component.languageCode,
-    })),
-    location: {
-      latitude: data.location?.latitude ?? 0,
-      longitude: data.location?.longitude ?? 0,
-    },
-  };
-}
