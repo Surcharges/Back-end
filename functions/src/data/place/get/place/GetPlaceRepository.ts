@@ -1,6 +1,9 @@
-import { CustomRequestPlace } from './DTO/GetPlaceRepositoryResponse';
+import { formatPlaceData } from './Helpers/formatPlaceData'
 import {getPlaceFullRepositoryResponse} from './DTO/GetPlaceFullRepositoryResponse'
 import { database } from '@data/firebase';
+import { PostPlaceRepository } from '@data/place/post/place/PostPlaceRepository'
+import { GetSurchargeRepo } from '@data/surcharge/get/getSurchargeRepository'
+import { GetSurchargeRepositoryResponse } from '@data/surcharge/get/DTO/GetSurchargeRepositoryResponse'
 
 export async function GetPlaceRepository(id: string): Promise<getPlaceFullRepositoryResponse> {
   try {
@@ -8,40 +11,18 @@ export async function GetPlaceRepository(id: string): Promise<getPlaceFullReposi
     const placeDoc = await database.collection('places').doc(id).get();
 
     if (!placeDoc.exists) {
-      // If no data in Firestore, fetch from external API
-      const response = await fetch(`https://places.googleapis.com/v1/places/${id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Goog-Api-Key': process.env.GOOGLE_MAPS_API_KEY ?? '',
-          'X-Goog-FieldMask': 'id,displayName,addressComponents,location',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not okay');
-      }
-
-      const externalData = await response.json();
-
-      const placesRef = database.collection('places').doc(id);
-      await placesRef.set(formatPlaceData(externalData))
-
-      return {...formatPlaceData(externalData)}
+      return PostPlaceRepository(id)
     } else {
-      // If data exists in Firestore
       const placeData = placeDoc.data();
-      if (!placeData) {
-        throw new Error('Firestore data is empty or undefined');
-      }
-
-      const surchargeDoc = await database.collection('surcharges').doc(id).get();
-      const surchargeData = surchargeDoc.exists ? surchargeDoc.data() : {};
+      const surchargeData = await GetSurchargeRepo(id);
+      const isSurchargeData = (data: any): data is GetSurchargeRepositoryResponse => {
+        return data && 'rate' in data && 'reportedDate' in data;
+      };
 
       return {
         ...formatPlaceData(placeData),
-        rate: surchargeData?.rate ?? null,
-        reportedDate: surchargeData?.reportedDate ?? null,
+        rate: isSurchargeData(surchargeData) ? surchargeData.rate : undefined,
+        reportedDate: isSurchargeData(surchargeData) ? surchargeData.reportedDate : undefined,
       };
     }
   } catch (error) {
@@ -50,22 +31,3 @@ export async function GetPlaceRepository(id: string): Promise<getPlaceFullReposi
   }
 }
 
-function formatPlaceData(data: any): CustomRequestPlace {
-  return {
-    id: data.id,
-    displayName: {
-      text: data.displayName?.text ?? '',
-      languageCode: data.displayName?.languageCode ?? '',
-    },
-    addressComponents: (data.addressComponents ?? []).map((component: any) => ({
-      longText: component.longText,
-      shortText: component.shortText,
-      types: component.types,
-      languageCode: component.languageCode,
-    })),
-    location: {
-      latitude: data.location?.latitude ?? 0,
-      longitude: data.location?.longitude ?? 0,
-    },
-  };
-}

@@ -1,9 +1,9 @@
 import { PostSurchargeRepositoryRequest } from "./DTO/PostSurchargeRepositoryRequest";
-import { GetPlaceRepository } from "@data/place/get/place/GetPlaceRepository"
 import { database } from "@data/firebase"
 import { storage } from "@data/firebase"
 import { Timestamp } from "firebase-admin/firestore"
 import { GeoPoint } from "firebase-admin/firestore";
+import { PostPlaceRepository } from '@data/place/post/place/PostPlaceRepository'
 
 export async function PostSurchargeRepo(request: PostSurchargeRepositoryRequest): Promise<void> {
   try {
@@ -15,7 +15,8 @@ export async function PostSurchargeRepo(request: PostSurchargeRepositoryRequest)
     
     const placeDocCheck = await database.collection('places').doc(request.place.id).get();
     if(!placeDocCheck.exists){
-      GetPlaceRepository(request.place.id)
+      PostPlaceRepository(request.place.id)
+      database.collection('places').doc(request.place.id).set(request.place)
     }
     
     const buffer = Buffer.from(request.image, 'base64')
