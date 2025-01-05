@@ -3,3 +3,4 @@ export { PostPlaceRepositoryRequest } from './post/place/DTO/PostPlaceRepository
 export { PlaceDTO } from './get/place/DTO/PlaceDTO'
 export { GetPlacesRepository } from './get/places/GetPlacesRepository'
 export { GetPlaceRepository } from './get/place/GetPlaceRepository'
+export { PostPlaceRepository } from './post/place/PostPlaceRepository'

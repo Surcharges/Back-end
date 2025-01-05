@@ -1,9 +1,8 @@
 import { formatPlaceData } from './Helpers/formatPlaceData'
 import {getPlaceFullRepositoryResponse} from './DTO/GetPlaceFullRepositoryResponse'
 import { database } from '@data/firebase';
-import { PostPlaceRepository } from '@data/place/post/place/PostPlaceRepository'
-import { GetSurchargeRepo } from '@data/surcharge/get/getSurchargeRepository'
-import { GetSurchargeRepositoryResponse } from '@data/surcharge/get/DTO/GetSurchargeRepositoryResponse'
+import { PostPlaceRepository } from '@data/place'
+import { GetSurchargeRepo } from '@data/surcharge'
 
 export async function GetPlaceRepository(id: string): Promise<getPlaceFullRepositoryResponse> {
   try {
@@ -15,14 +14,11 @@ export async function GetPlaceRepository(id: string): Promise<getPlaceFullReposi
     } else {
       const placeData = placeDoc.data();
       const surchargeData = await GetSurchargeRepo(id);
-      const isSurchargeData = (data: any): data is GetSurchargeRepositoryResponse => {
-        return data && 'rate' in data && 'reportedDate' in data;
-      };
-
+      
       return {
         ...formatPlaceData(placeData),
-        rate: isSurchargeData(surchargeData) ? surchargeData.rate : undefined,
-        reportedDate: isSurchargeData(surchargeData) ? surchargeData.reportedDate : undefined,
+        rate: surchargeData?.rate,
+        reportedDate: surchargeData?.reportedDate,
       };
     }
   } catch (error) {
