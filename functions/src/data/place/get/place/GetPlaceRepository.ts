@@ -2,7 +2,7 @@ import { formatPlaceData } from './Helpers/formatPlaceData'
 import {getPlaceFullRepositoryResponse} from './DTO/GetPlaceFullRepositoryResponse'
 import { database } from '@data/firebase';
 import { PostPlaceRepository } from '@data/place'
-import { GetSurchargeRepo } from '@data/surcharge'
+import { GetSurchargesRepository } from '@data/surcharge'
 
 export async function GetPlaceRepository(id: string): Promise<getPlaceFullRepositoryResponse> {
   try {
@@ -29,7 +29,7 @@ export async function GetPlaceRepository(id: string): Promise<getPlaceFullReposi
 
     } else {
       const placeData = placeDoc.data();
-      const surchargeData = await GetSurchargeRepo(id);
+      const surchargeData = await GetSurchargesRepository(id);
       
       return {
         ...formatPlaceData(placeData),
