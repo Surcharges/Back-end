@@ -33,6 +33,7 @@ async function _GetSurcharge(placeId: string): Promise<GetSurchargesRepositoryRe
       reportedDate: data.reportedDate, // Keep as Firestore Timestamp
       totalAmount: data.totalAmount,
       surchargeAmount: data.surchargeAmount,
+      surchargeStatus: data.surchargeStatus
     };
 
     console.log("Surcharge fetched successfully:", result);
@@ -67,6 +68,7 @@ async function _GetSurcharges(placeIds: string[]): Promise<GetSurchargesReposito
         reportedDate: data.reportedDate, // Keep as Firestore Timestamp
         totalAmount: data.totalAmount,
         surchargeAmount: data.surchargeAmount,
+        surchargeStatus: data.surchargeStatus
       }
     })
 
