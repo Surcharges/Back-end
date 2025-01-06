@@ -17,11 +17,18 @@ type addressComponents = {
   languageCode: string
 }
 
+export enum SurchargeStatus{
+  REPORTED,
+  CONFIRMED,
+  UNKNOWN
+}
+
 export type GetPlaceUsecaseResponse = {
   id: string,
   displayName: displayName,
   addressComponents: addressComponents[],
   location?: LatLng,
   rate?: number,
-  reportedDate?: Timestamp
+  reportedDate?: Timestamp,
+  surchargeStatus?: SurchargeStatus
 }

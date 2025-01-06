@@ -11,28 +11,29 @@ export const getPlaceInterface = async (request: express.Request, response: Resp
   }
 
   try {
-    const place = await getPlaceUsecase({ id: placeId });
+    const result = await getPlaceUsecase({ id: placeId });
 
     response.status(200).send({
-      id: place.id,
+      id: result.id,
       displayName: {
-        text: place.displayName.text,
-        languageCode: place.displayName.languageCode,
+        text: result.displayName.text,
+        languageCode: result.displayName.languageCode,
       },
-      addressComponents: place.addressComponents.map((component) => ({
+      addressComponents: result.addressComponents.map((component) => ({
         longText: component.longText,
         shortText: component.shortText,
         types: component.types,
         languageCode: component.languageCode,
       })),
-      location: place.location
+      location: result.location
         ? {
-            latitude: place.location.latitude,
-            longitude: place.location.longitude,
+            latitude: result.location.latitude,
+            longitude: result.location.longitude,
           }
         : undefined,
-      rate: place.rate ?? null, // Include the rate field
-      reportedDate: place.reportedDate ?? null, // Include the reportedDate field
+      rate: result.rate ?? null, // Include the rate field
+      reportedDate: result.reportedDate ?? null, // Include the reportedDate field
+      surchargeStatus: result.surchargeStatus
     });
   } catch (error) {
     console.error("Error fetching place data:", error);

@@ -22,6 +22,7 @@ export const getPlaceUsecase = async (request: GetPlaceUsecaseRequest): Promise<
       longitude: result.location?.longitude ?? 0,
     },
     rate: result.rate,
-    reportedDate: result.reportedDate
+    reportedDate: result.reportedDate,
+    surchargeStatus: result.surchargeStatus
   };
 };
