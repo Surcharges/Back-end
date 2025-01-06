@@ -3,13 +3,21 @@ import { database } from "@data/firebase"
 
 export function GetSurchargesRepository(placeId: string): Promise<GetSurchargesRepositoryResponse>
 export function GetSurchargesRepository(placeIds: string[]): Promise<GetSurchargesRepositoryResponse[]>
+export function GetSurchargesRepository({}): Promise<GetSurchargesRepositoryResponse[]>
 
-export async function GetSurchargesRepository(param: string | string[]): Promise<GetSurchargesRepositoryResponse | GetSurchargesRepositoryResponse[] | {}> {
+export async function GetSurchargesRepository(param: string | string[] | {}): Promise<GetSurchargesRepositoryResponse | GetSurchargesRepositoryResponse[] | {}> {
 
-  if (typeof param === 'string') {
-    return await _GetSurcharge(param)
+  if (param === undefined || (typeof param === 'object' && Object.keys(param).length === 0)) {
+    // Handle case for no parameters (return all records)
+    return await _GetAllSurcharges();
+  } else if (typeof param === 'string') {
+    // Handle single string parameter
+    return await _GetSurcharge(param);
+  } else if (Array.isArray(param)) {
+    // Handle array of strings
+    return await _GetSurcharges(param);
   } else {
-    return _GetSurcharges(param)
+    throw new Error("Invalid parameter provided to GetSurchargesRepository.");
   }
   
 }
@@ -36,6 +44,7 @@ async function _GetSurcharge(placeId: string): Promise<GetSurchargesRepositoryRe
       console.log("Surcharge fetched successfully:", result);
       return result;
     }
+
   } catch (error) {
     console.error("Error fetching surcharge:", error);
     throw error;
@@ -51,27 +60,52 @@ async function _GetSurcharges(placeIds: string[]): Promise<GetSurchargesReposito
       .collection('surcharges')
       .where("placeInformation", "in", surchargesPlaceReferences) // Firestore allows querying with an "in" operator for multiple IDs
       .get()
-    if (!surcharges){
-      console.log("Surcharges data are undefined for the given places ids.");
-      return {}
-    } else {
-      const matchedSurcharges = surcharges.docs.map((surcharge) => {
-        const data = surcharge.data()
-        return {
-          id: surcharge.id,
-          placeInformation: data.placeInformation, // Convert Firestore reference to string
-          rate: data.rate,
-          reportedDate: data.reportedDate, // Keep as Firestore Timestamp
-          totalAmount: data.totalAmount,
-          surchargeAmount: data.surchargeAmount,
-          surchargeStatus: data.surchargeStatus as SurchargeStatus
-        }
-      })
-      return matchedSurcharges
-    } 
+
+    const matchedSurcharges = surcharges.docs.map((surcharge) => {
+      const data = surcharge.data()
+      return {
+        id: surcharge.id,
+        placeInformation: data.placeInformation, // Convert Firestore reference to string
+        rate: data.rate,
+        reportedDate: data.reportedDate, // Keep as Firestore Timestamp
+        totalAmount: data.totalAmount,
+        surchargeAmount: data.surchargeAmount,
+        surchargeStatus: data.surchargeStatus
+      }
+    })
+
+    return matchedSurcharges
+
+  } catch (error) {
+    console.error("Error fetching surcharge:", error);
+    throw error;
+  }
+}
+
+async function _GetAllSurcharges(): Promise<GetSurchargesRepositoryResponse[]> {
+
+  try {
+    const surcharges = await database
+      .collection('surcharges')
+      .get()
+
+    const matchedSurcharges = surcharges.docs.map((surcharge) => {
+      const data = surcharge.data()
+      return {
+        id: surcharge.id,
+        placeInformation: data.placeInformation, // Convert Firestore reference to string
+        rate: data.rate,
+        reportedDate: data.reportedDate, // Keep as Firestore Timestamp
+        totalAmount: data.totalAmount,
+        surchargeAmount: data.surchargeAmount,
+        surchargeStatus: data.surchargeStatus
+      }
+    })
+
+    return matchedSurcharges
+
   } catch (error) {
     console.error("Error fetching surcharges:", error);
     throw error;
   }
 }
-
