@@ -1,22 +1,23 @@
 import { getSurchargesUsecase } from "@domain/surcharge"
-import { Response } from "express";
+import { Response } from "./model/GetSurchargesInterfaceResponse"
 
-export const getSurchargesInterface = async (res: Response): Promise<void> => {
+export const getSurchargesInterface = async (res: Response) => {
   try {
-      const surcharges = await getSurchargesUsecase()
-      res.status(200).send(
-        surcharges.map((surcharge) => ({
-            placeInformation: surcharge.placeInformation,
-            rate: surcharge.rate,
-            reportedDate: surcharge.reportedDate,
-            totalAmount: surcharge.totalAmount,
-            surchargeAmount: surcharge.surchargeAmount,
-            surchargeStatus: surcharge.surchargeStatus
-        }))
-      )
-    } catch (error) {
-      console.log("Error in getSurchargeInterface:", error);
-      res.status(500).send(error);
-      return
-    }
+    console.log("Response object:", res.status);
+    const surcharges = await getSurchargesUsecase();
+    res.status(200).send(
+      surcharges.map((surcharge) => ({
+        placeInformation: surcharge.placeInformation,
+        rate: surcharge.rate,
+        reportedDate: surcharge.reportedDate,
+        totalAmount: surcharge.totalAmount,
+        surchargeAmount: surcharge.surchargeAmount,
+        surchargeStatus: surcharge.surchargeStatus
+      }))
+    );
+  } catch (error) {
+    console.error("Error in getSurchargeInterface:", error);
+    res.status(500).send({error});
+  }
+
 };
