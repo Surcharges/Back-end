@@ -2,6 +2,7 @@ import { PostSurchargeRepo } from "@data/surcharge";
 import { PostSurchargeUsecaseRequest } from "./entity/PostSurchargeUsecaseRequest";
 import { PostSurchargeRepositoryRequest } from "@data/surcharge";
 import { rateCalculatorHelper } from "../helpers/rateCalculatorHelper";
+import { SurchargeStatus } from "@data/surcharge"
 
 export const postSurchargeUsecase = async (request: PostSurchargeUsecaseRequest): Promise<void> => {
   try {
@@ -18,7 +19,8 @@ export const postSurchargeUsecase = async (request: PostSurchargeUsecaseRequest)
         image: request.image,
         rate: rate,
         totalAmount: request.totalAmount ?? 0,
-        surchargeAmount: request.surchargeAmount ?? 0
+        surchargeAmount: request.surchargeAmount ?? 0,
+        surchargeStatus: SurchargeStatus.REPORTED 
     };
 
     // Call the repository function
