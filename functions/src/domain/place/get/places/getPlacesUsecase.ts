@@ -32,8 +32,8 @@ export const getPlacesUsecase = async (request: GetPlacesUsecaseRequest): Promis
             longitude: place.location.longitude,
           }
         : undefined,
-      // status: place.status, /* Status must include in this repository. */
       rate: resultSurcharges.find((surcharge) => surcharge.id === place.id)?.rate,
+      status: resultSurcharges.find((surcharge) => surcharge.id === place.id)?.surchargeStatus,
     }
   })
 
