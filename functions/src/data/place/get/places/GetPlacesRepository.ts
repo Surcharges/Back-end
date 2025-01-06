@@ -62,7 +62,6 @@ export async function GetPlacesRepository(
             };
           }),
           location: null,
-          apiKey: null,
         };
       }),
       nextPageToken: data.nextPageToken,
