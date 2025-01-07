@@ -74,6 +74,8 @@ async function _GetSurcharges(placeIds: string[]): Promise<GetSurchargesReposito
       }
     })
 
+    console.log("Matched surcharges fetched successfully:", matchedSurcharges);
+
     return matchedSurcharges
 
   } catch (error) {
@@ -89,7 +91,7 @@ async function _GetAllSurcharges(): Promise<GetSurchargesRepositoryResponse[]> {
       .collection('surcharges')
       .get()
 
-    const matchedSurcharges = surcharges.docs.map((surcharge) => {
+    const AllSurcharges = surcharges.docs.map((surcharge) => {
       const data = surcharge.data()
       return {
         id: surcharge.id,
@@ -101,8 +103,9 @@ async function _GetAllSurcharges(): Promise<GetSurchargesRepositoryResponse[]> {
         surchargeStatus: data.surchargeStatus
       }
     })
-
-    return matchedSurcharges
+    
+    console.log("All surcharges fetched successfully:", AllSurcharges);
+    return AllSurcharges
 
   } catch (error) {
     console.error("Error fetching surcharges:", error);
