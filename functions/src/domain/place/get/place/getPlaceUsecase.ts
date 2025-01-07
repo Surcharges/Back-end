@@ -1,9 +1,12 @@
 import { GetPlaceRepository } from "@data/place";
 import { GetPlaceUsecaseRequest } from "./entity/GetPlaceUsecaseRequest";
 import { GetPlaceUsecaseResponse } from "./entity/GetPlaceUsecaseResponse";
+import { GetSurchargesRepository } from '@data/surcharge'
+import { SurchargeStatus } from "@data/surcharge"
 
 export const getPlaceUsecase = async (request: GetPlaceUsecaseRequest): Promise<GetPlaceUsecaseResponse> => {
   const result = await GetPlaceRepository(request.id);
+  const surchargeData = await GetSurchargesRepository(request.id);
 
   return {
     id: result.id,
@@ -21,8 +24,8 @@ export const getPlaceUsecase = async (request: GetPlaceUsecaseRequest): Promise<
       latitude: result.location?.latitude ?? 0,
       longitude: result.location?.longitude ?? 0,
     },
-    rate: result.rate,
-    reportedDate: result.reportedDate,
-    surchargeStatus: result.surchargeStatus
+    rate: surchargeData?.rate ?? undefined, 
+    reportedDate: surchargeData?.reportedDate ?? undefined, // Default to 0 if reportedDate is undefined
+    surchargeStatus: surchargeData?.surchargeStatus ?? SurchargeStatus.UNKNOWN,
   };
 };
