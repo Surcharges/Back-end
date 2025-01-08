@@ -1,6 +1,6 @@
-import { CustomRequestPlace } from '../DTO/GetPlaceRepositoryResponse';
+import { PlaceDTO } from '../DTO/PlaceDTO';
 
-export function formatPlaceData(data: any): CustomRequestPlace {
+export function formatPlaceData(data: any): PlaceDTO {
   return {
     id: data.id,
     displayName: {
