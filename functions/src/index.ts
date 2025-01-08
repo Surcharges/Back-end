@@ -24,6 +24,7 @@ api.get("/place", getPlaceInterface);
 api.get("/places", getPlacesInterface);
 api.get("/surcharge", getSurchargeInterface)
 api.post("/surcharge", postSurchargeInterface)
+api.put("/surcharge", putSurchargeInterface)
 
 exports.api = onRequest(api)
 

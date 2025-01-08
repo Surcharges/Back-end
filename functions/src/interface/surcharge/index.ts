@@ -1,3 +1,6 @@
 export { getSurchargeInterface } from "./get/getSurchargeInterface"
-export { getSurchargesInterface } from "./get/getSurchargesInterface"
 export { postSurchargeInterface } from "./post/postSurchargeInterface"
+export { putSurchargeInterface } from "./put/putSurchargeInterface"
+export { PostSurchargeInterfaceRequest } from "./post/models/PostSurchargeInterfaceRequest"
+export { PutSurchargeInterfaceRequest } from "./put/models/PutSurchargeInterfaceRequest"
+export { getSurchargesInterface } from "./get/getSurchargesInterface"
