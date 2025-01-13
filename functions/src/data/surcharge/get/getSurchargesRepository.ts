@@ -67,7 +67,7 @@ async function _GetSurcharges(placeIds: string[]): Promise<GetSurchargesReposito
           reportedDate: data.reportedDate, // Keep as Firestore Timestamp
           totalAmount: data.totalAmount,
           surchargeAmount: data.surchargeAmount,
-          surchargeStatus: data.surchargeStatus as SurchargeStatus 
+          surchargeStatus: data.surchargeStatus as SurchargeStatus
         }
       })
       return matchedSurcharges
