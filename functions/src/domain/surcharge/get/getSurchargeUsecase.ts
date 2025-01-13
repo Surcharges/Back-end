@@ -11,7 +11,8 @@ export const getSurchargeUsecase = async (request: GetSurchargeUsecaseRequest): 
     rate: result.rate,
     reportedDate: result.reportedDate.toMillis(),
     totalAmount: result.totalAmount,
-    surchargeAmount: result.surchargeAmount
+    surchargeAmount: result.surchargeAmount,
+    surchargeStatus: result.surchargeStatus
   }
   
 }

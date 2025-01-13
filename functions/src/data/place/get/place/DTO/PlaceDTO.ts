@@ -6,5 +6,5 @@ export type PlaceDTO = {
   id: string,
   displayName: LocalizedTextDTO,
   addressComponents: AddressComponentsDTO[],
-  location?: LatLngDTO
+  location: LatLngDTO
 }

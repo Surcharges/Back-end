@@ -22,10 +22,17 @@ interface CustomRequestPlace {
   location: LatLngDTO
 }
 
+export enum SurchargeStatus {
+  REPORTED = 'REPORTED',
+  CONFIRMED = 'CONFIRMED',
+  UNKNOWN = 'UNKNOWN'
+}
+
 export type PostSurchargeRepositoryRequest = {
   place: CustomRequestPlace,
   image: string,
   rate: number,
   totalAmount?: number,
   surchargeAmount?: number,
+  surchargeStatus: SurchargeStatus
 }

@@ -23,7 +23,8 @@ export async function PostSurchargeRepo(request: PostSurchargeRepositoryRequest)
       rate: request.rate,
       reportedDate: Timestamp.now(),
       totalAmount: request.totalAmount,
-      surchargeAmount: request.surchargeAmount
+      surchargeAmount: request.surchargeAmount,
+      surchargeStatus: request.surchargeStatus
     });
 
   } catch (error) {

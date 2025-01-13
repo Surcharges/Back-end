@@ -1,10 +1,9 @@
 import { formatPlaceData } from './Helpers/formatPlaceData'
-import {getPlaceFullRepositoryResponse} from './DTO/GetPlaceFullRepositoryResponse'
 import { database } from '@data/firebase';
 import { PostPlaceRepository } from '@data/place'
-import { GetSurchargesRepository } from '@data/surcharge'
+import { PlaceDTO } from "@data/place"
 
-export async function GetPlaceRepository(id: string): Promise<getPlaceFullRepositoryResponse> {
+export async function GetPlaceRepository(id: string): Promise<PlaceDTO> {
   try {
     // Fetch place data from Firestore
     const placeDoc = await database.collection('places').doc(id).get();
@@ -25,16 +24,14 @@ export async function GetPlaceRepository(id: string): Promise<getPlaceFullReposi
       }
       const externalData = await response.json();
       await PostPlaceRepository(formatPlaceData(externalData))
-      return {...formatPlaceData(externalData)}
+      return {
+        ...formatPlaceData(externalData),
+      }
 
     } else {
       const placeData = placeDoc.data();
-      const surchargeData = await GetSurchargesRepository(id);
-      
       return {
         ...formatPlaceData(placeData),
-        rate: surchargeData?.rate,
-        reportedDate: surchargeData?.reportedDate,
       };
     }
   } catch (error) {
