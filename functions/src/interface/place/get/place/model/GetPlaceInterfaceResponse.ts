@@ -22,6 +22,7 @@ export interface GetPlaceInterfaceResponse {
   displayName: LocalizedText
   addressComponents: AddressComponents[]
   location: LatLng
+  status: string
 }
 
 export interface Response extends express.Response {

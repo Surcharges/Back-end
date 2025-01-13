@@ -1,4 +1,4 @@
-import { GetSurchargesRepository } from "@data/surcharge";
+import { GetSurchargesRepository, SurchargeStatus } from "@data/surcharge";
 import { GetPlacesUsecaseRequest } from "./entity/GetPlacesUsecaseRequest";
 import { GetPlacesUsecaseResponse } from "./entity/GetPlacesUsecaseResponse";
 import { GetPlacesRepository } from "@data/place";
@@ -33,7 +33,7 @@ export const getPlacesUsecase = async (request: GetPlacesUsecaseRequest): Promis
           }
         : undefined,
       rate: resultSurcharges.find((surcharge) => surcharge.id === place.id)?.rate,
-      status: resultSurcharges.find((surcharge) => surcharge.id === place.id)?.surchargeStatus,
+      surchargeStatus: resultSurcharges.find((surcharge) => surcharge.id === place.id)?.surchargeStatus as SurchargeStatus,
     }
   })
 

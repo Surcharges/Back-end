@@ -21,7 +21,7 @@ export const postSurchargeUsecase = async (request: PostSurchargeUsecaseRequest)
         totalAmount: request.totalAmount ?? 0,
         surchargeAmount: request.surchargeAmount ?? 0,
         surchargeStatus: SurchargeStatus.REPORTED 
-    };
+    }
 
     // Call the repository function
     return await PostSurchargeRepo(surcharge)

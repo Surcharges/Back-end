@@ -1,4 +1,4 @@
-import { GetSurchargesRepositoryResponse } from './DTO/GetSurchargesRepositoryResponse'
+import { GetSurchargesRepositoryResponse, SurchargeStatus } from './DTO/GetSurchargesRepositoryResponse'
 import { database } from "@data/firebase"
 
 export function GetSurchargesRepository(placeId: string): Promise<GetSurchargesRepositoryResponse>
@@ -64,7 +64,7 @@ async function _GetSurcharges(placeIds: string[]): Promise<GetSurchargesReposito
           reportedDate: data.reportedDate, // Keep as Firestore Timestamp
           totalAmount: data.totalAmount,
           surchargeAmount: data.surchargeAmount,
-          surchargeStatus: data.surchargeStatus
+          surchargeStatus: data.surchargeStatus as SurchargeStatus
         }
       })
       return matchedSurcharges

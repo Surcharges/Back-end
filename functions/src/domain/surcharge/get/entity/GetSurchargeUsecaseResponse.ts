@@ -1,7 +1,7 @@
 export enum SurchargeStatus{
-  REPORTED,
-  CONFIRMED,
-  UNKNOWN
+  REPORTED = 'REPORTED',
+  CONFIRMED = 'CONFIRMED',
+  UNKNOWN = 'UNKNOWN'
 }
 
 export type GetSurchargeUsecaseResponse = {
