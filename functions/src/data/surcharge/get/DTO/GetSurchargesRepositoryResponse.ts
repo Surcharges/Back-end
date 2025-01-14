@@ -12,6 +12,6 @@ export type GetSurchargesRepositoryResponse = {
   reportedDate: Timestamp
   rate: number
   totalAmount: number
-  surchargeAmount: number,
+  surchargeAmount: number
   surchargeStatus: SurchargeStatus
 }

@@ -3,7 +3,7 @@ require('module-alias/register')
 import express from "express";
 import { onRequest } from "firebase-functions/v2/https";
 import { getPlaceInterface, getPlacesInterface } from "@interface/place";
-import { getSurchargeInterface, postSurchargeInterface } from "@interface/surcharge";
+import { getSurchargeInterface, postSurchargeInterface, getSurchargesInterface } from "@interface/surcharge";
 import { MobileAuth } from "@shared/authentication";
 
 const cors = require('cors')
@@ -21,6 +21,7 @@ api.use(cors(corsOptions))
 api.get("/place", getPlaceInterface);
 api.get("/places", getPlacesInterface);
 api.get("/surcharge", getSurchargeInterface)
+api.get("/surcharges", getSurchargesInterface)
 api.post("/surcharge", postSurchargeInterface)
 
 exports.api = onRequest(api)
