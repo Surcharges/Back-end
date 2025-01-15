@@ -1,4 +1,5 @@
 export type PutSurchargeInterfaceRequest = {
   id: string,
-  rate? : number
+  surchargeAmount? : number,
+  totalAmount? : number
 }
