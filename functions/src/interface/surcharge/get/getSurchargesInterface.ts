@@ -1,4 +1,4 @@
-import { getSurchargesUsecase } from "@domain/surcharge";
+import { getSurchargesUsecase } from "@domain/surcharge"
 import { Response, Request } from "express";
 
 export const getSurchargesInterface = async (req: Request, res: Response) => {
