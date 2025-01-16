@@ -6,7 +6,8 @@ export enum SurchargeStatus {
 
 export type PutSurchargeRepositoryRequest = {
   id: string,
+	rate?: number,
 	surchargeAmount?: number,
 	totalAmount?: number,
-	surcahrgeStatus: SurchargeStatus
+	surchargeStatus: SurchargeStatus
 }

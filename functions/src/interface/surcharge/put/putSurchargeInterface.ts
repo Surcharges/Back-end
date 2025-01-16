@@ -11,9 +11,9 @@ export const putSurchargeInterface = async (req: Request, res: Response): Promis
       totalAmount: totalAmount
     };
     await putSurchargeUsecase(surcharge);
-    res.status(200).send({ message: "Surcharge successfully verifyed." });
+    res.status(200).send({ message: "Surcharge successfully confirmed." });
   } catch (error) {
-    console.error("Error in putSurchargeInterface controller:", error);
+    console.error("Error in putSurchargeInterface:", error);
     res.status(500).send({ message: "An error occurred while verifying the surcharge." });
   }
 };
