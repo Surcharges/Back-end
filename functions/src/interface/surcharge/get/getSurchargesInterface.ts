@@ -6,6 +6,7 @@ export const getSurchargesInterface = async (req: Request, res: Response) => {
     const surcharges = await getSurchargesUsecase();
     res.status(200).send(
       surcharges.map((surcharge) => ({
+        image: surcharge.image,
         placeInformation: surcharge.placeInformation,
         rate: surcharge.rate,
         reportedDate: surcharge.reportedDate,

@@ -91,6 +91,7 @@ async function _GetAllSurcharges(): Promise<GetSurchargesRepositoryResponse[] | 
         const data = surcharge.data()
         return {
           id: surcharge.id,
+          image: data.image,
           placeInformation: data.placeInformation, // Convert Firestore reference to string
           rate: data.rate,
           reportedDate: data.reportedDate, // Keep as Firestore Timestamp

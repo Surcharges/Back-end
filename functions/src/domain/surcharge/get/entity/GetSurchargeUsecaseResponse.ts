@@ -5,6 +5,7 @@ export enum SurchargeStatus{
 }
 
 export type GetSurchargeUsecaseResponse = {
+  image?: string,
   placeInformation: string;
   rate: number,
   reportedDate: number

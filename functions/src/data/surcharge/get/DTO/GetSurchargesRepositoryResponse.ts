@@ -8,6 +8,7 @@ export enum SurchargeStatus {
 
 export type GetSurchargesRepositoryResponse = {
   id: string
+  image?: string
   placeInformation: string
   reportedDate: Timestamp
   rate: number
