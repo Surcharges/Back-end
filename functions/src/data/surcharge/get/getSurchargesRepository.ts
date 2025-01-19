@@ -1,5 +1,6 @@
 import { GetSurchargesRepositoryResponse, SurchargeStatus } from './DTO/GetSurchargesRepositoryResponse'
 import { database } from "@data/firebase"
+// import { storage, getDownloadURL } from "@data/firebase"
 
 export function GetSurchargesRepository(placeId: string): Promise<GetSurchargesRepositoryResponse>
 export function GetSurchargesRepository(placeIds: string[]): Promise<GetSurchargesRepositoryResponse[]>
@@ -80,31 +81,37 @@ async function _GetSurcharges(placeIds: string[]): Promise<GetSurchargesReposito
 
 async function _GetAllSurcharges(): Promise<GetSurchargesRepositoryResponse[] | {}> {
   try {
-    const surcharges = await database
-      .collection('surcharges')
-      .get()
-    if (!surcharges){
-      console.log('There is no surcharges data yet')
-      return {}
-    } else{
-      const AllSurcharges = surcharges.docs.map((surcharge) => {
-        const data = surcharge.data()
+    const surcharges = await database.collection('surcharges').get();
+
+    if (surcharges.empty) {
+      console.log('There is no surcharges data yet');
+      return {};
+    }
+
+    // Fetch all surcharges and handle image retrieval
+    const AllSurcharges = await Promise.all(
+      surcharges.docs.map(async (surcharge) => {
+        const data = surcharge.data();
+        // const fileName = data.image;
+        // const file = storage.bucket().file(fileName);
+        // const url = await getDownloadURL(file)
         return {
           id: surcharge.id,
-          image: data.image,
-          placeInformation: data.placeInformation, // Convert Firestore reference to string
+          image: data.image, // Download url
+          placeInformation: data.placeInformation, // Convert Firestore reference to string if necessary
           rate: data.rate,
           reportedDate: data.reportedDate, // Keep as Firestore Timestamp
           totalAmount: data.totalAmount,
           surchargeAmount: data.surchargeAmount,
-          surchargeStatus: data.surchargeStatus
-        }
+          surchargeStatus: data.surchargeStatus,
+        };
       })
-      console.log("All surcharges fetched successfully:", AllSurcharges);
-      return AllSurcharges
-    }
+    );
+
+    console.log('All surcharges fetched successfully:', AllSurcharges);
+    return AllSurcharges;
   } catch (error) {
-    console.error("Error fetching surcharges:", error);
+    console.error('Error fetching surcharges:', error);
     throw error;
   }
 }
