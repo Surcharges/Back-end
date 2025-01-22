@@ -1,0 +1,1 @@
+export { getImageInterface } from "./image/getImageInterface"
