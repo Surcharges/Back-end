@@ -3,11 +3,12 @@ import { database } from "@data/firebase"
 
 export async function PutSurchargeRepository(request: PutSurchargeRepositoryRequest): Promise<void> {
   try {
+    console.log("PutSurchargeRepository ID: ", request.id)
     const dbRef = database.collection('surcharges')
     const docRef = dbRef.doc(request.id)
     const doc = await docRef.get()
     const surcharge = doc.data()
-    if (!surcharge) {
+    if (!docRef || !surcharge ) {
       throw new Error("Surcharge data is undefined for the given id in PutSurchargeRepository.")
       } else {
         await docRef.set({
