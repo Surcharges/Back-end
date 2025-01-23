@@ -31,7 +31,7 @@ export const getPlaceInterface = async (request: express.Request, response: Resp
             longitude: result.location.longitude,
           }
         : undefined,
-      rate: result.rate ?? null, // Include the rate field
+      surchargeRate: result.rate ?? null, // Include the rate field
       reportedDate: result.reportedDate ?? null, // Include the reportedDate field
       surchargeStatus: result.surchargeStatus
     });

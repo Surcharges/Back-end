@@ -44,8 +44,8 @@ export const getPlacesInterface = async (request: express.Request, response: Res
             latitude: place.location.latitude,
             longitude: place.location.longitude
           } : undefined,
-          status: place.surchargeStatus,
-          rate: place.rate
+          surchargeStatus: place.surchargeStatus,
+          surchargeRate: place.rate
         }
       }),
       nextPageToken: places.nextPageToken
