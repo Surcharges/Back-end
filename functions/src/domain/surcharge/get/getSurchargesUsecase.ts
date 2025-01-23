@@ -6,6 +6,7 @@ export const getSurchargesUsecase = async (): Promise<GetSurchargeUsecaseRespons
     const allSurcharges = await GetSurchargesRepository({})
     const result = allSurcharges.map((surcharge) => {
       return {
+        id: surcharge.id,
         image: surcharge.image,
         placeInformation: surcharge.placeInformation,
         rate: surcharge.rate,

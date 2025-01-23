@@ -7,6 +7,7 @@ export const getSurchargeUsecase = async (request: GetSurchargeUsecaseRequest): 
   const result = await GetSurchargesRepository(request.placeId)
 
   return {
+    id: result.id,
     placeInformation: result.placeInformation,
     rate: result.rate,
     reportedDate: result.reportedDate.toMillis(),
