@@ -40,9 +40,12 @@ const mobile = express()
 
 mobile.use(MobileAuth)
 
-mobile.get("/place", getPlaceInterface);
-mobile.get("/places", getPlacesInterface);
-mobile.get("/surcharge", getSurchargeInterface)
-mobile.post("/surcharge", postSurchargeInterface)
+mobile.get("/place/v1", getPlaceInterface)
+mobile.get("/places/v1", getPlacesInterface)
+mobile.post("/surcharge/v1", postSurchargeInterface)
+
+mobile.use((req, res) => {
+  res.status(404).send()
+})
 
 exports.mobile = onRequest(mobile)
