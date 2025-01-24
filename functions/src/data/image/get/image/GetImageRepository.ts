@@ -1,19 +1,28 @@
-import { storage } from "@data/firebase"
-import { ImageDTO } from "@data/image"
+import { storage } from "@data/firebase";
+import { ImageDTO } from "@data/image";
 
 export async function GetImageRepository(image: string): Promise<ImageDTO> {
   try {
-    const [fileBuffer] = await storage.bucket().file(image).download();
-    const imageBlob = new Blob([fileBuffer], { type: 'image/jpeg' });
-    const imageResult: ImageDTO = {
-      image: imageBlob, 
-    };
-    console.log(imageResult, imageBlob)
-    return imageResult;
+    const imageRef = storage.bucket().file("reported/" + image);
+    if (!imageRef) {
+      console.log('Image does not exist in Firebase Storage');
+      return { image: [] }; // Empty Base64 string if image doesn't exist
+    }
 
+    const [fileBuffer] = await imageRef.download();
+    if (!fileBuffer) {
+      console.log('Failed to download image from Firebase Storage');
+      return { image: [] }; // Empty Base64 string if download fails
+    }
+
+    // Convert file buffer to Base64
+    const base64Image = fileBuffer.toString('base64');
+    const imageResult: ImageDTO = {
+      image: base64Image,
+    };
+    return imageResult;
   } catch (error) {
-    console.error('Error fetching place data:', error);
+    console.error('Error fetching image data:', error);
     throw error;
   }
 }
-

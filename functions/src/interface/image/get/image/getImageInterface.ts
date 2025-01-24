@@ -3,7 +3,7 @@ import { getImageUsecase } from "@domain/image";
 import { Response } from "./model/GetImageInterfaceResponse";
 
 export const getImageInterface = async (request: express.Request, response: Response) => {
-  const image = (request.body.image as string) || undefined;
+  const image = (request.query.image as string) || undefined;
 
   if (!image) {
     response.status(400).send({ message: "Missing image name" });
@@ -12,13 +12,13 @@ export const getImageInterface = async (request: express.Request, response: Resp
 
   try {
     const result = await getImageUsecase({ image: image });
-    console.log(result)
+    console.log("getImageInterface result: ", result.image)
 
     response.status(200).send({
       image: result.image,
     });
   } catch (error) {
-    console.error("Error fetching place data:", error);
+    console.error("Error fetching image data:", error);
     response.status(500).send({ message: "Internal server error" });
   }
 };

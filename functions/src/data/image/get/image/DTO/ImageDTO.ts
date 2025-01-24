@@ -1,3 +1,3 @@
 export type ImageDTO = {
-    image: Blob
+    image: string | []
 }

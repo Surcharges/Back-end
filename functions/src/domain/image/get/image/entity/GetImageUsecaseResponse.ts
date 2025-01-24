@@ -1,3 +1,3 @@
 export interface GetImageUsecaseResponse {
-    image: Blob
+    image: string | []
 }
