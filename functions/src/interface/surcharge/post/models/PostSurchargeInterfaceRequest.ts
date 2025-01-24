@@ -1,7 +1,10 @@
-export type PostSurchargeInterfaceRequest = {
-  placeId: string,
-  image: File,
-  rate?: number,
-  totalAmount?: number,
-  surchargeAmount?: number
+import express from "express"
+
+export interface PostSurchargeInterfaceRequest extends express.Request {
+  body: {
+    placeId: string
+    totalAmount: number
+    surchargeAmount: number
+    image: string
+  }
 }
