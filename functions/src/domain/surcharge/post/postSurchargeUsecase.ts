@@ -1,32 +1,44 @@
-import { PostSurchargeRepo } from "@data/surcharge";
-import { PostSurchargeUsecaseRequest } from "./entity/PostSurchargeUsecaseRequest";
-import { PostSurchargeRepositoryRequest } from "@data/surcharge";
-import { rateCalculatorHelper } from "../helpers/rateCalculatorHelper";
-import { SurchargeStatus } from "@data/surcharge"
+import { PostSurchargeRepo } from "@data/surcharge"
+import { PostSurchargeUsecaseRequest } from "./entity/PostSurchargeUsecaseRequest"
+import { PostSurchargeRepositoryRequest } from "@data/surcharge"
+import { GetPlaceRepository } from "@data/place"
+import { PostSurchargeUsecaseResponse } from "./entity/PostSurchargeUsecaseResponse"
+import { RateCalculator } from "./RateCalculator"
+import { SurchargeStatus } from "@shared/types/surcharge"
 
-export const postSurchargeUsecase = async (request: PostSurchargeUsecaseRequest): Promise<void> => {
+export const postSurchargeUsecase = async (request: PostSurchargeUsecaseRequest): Promise<PostSurchargeUsecaseResponse> => {
   try {
   
     // Map the Request object to PostSurchargeRepositoryRequest
-    const rate = rateCalculatorHelper(
-      request.rate ?? 0, // Default to 0 if undefined
-      request.totalAmount ?? 0, // Default to 0 if undefined
-      request.surchargeAmount ?? 0 // Default to 0 if undefined
+    const rate = RateCalculator(
+      request.totalAmount, // Default to 0 if undefined
+      request.surchargeAmount // Default to 0 if undefined
     )
+
+    // Get the place data
+    const place = await GetPlaceRepository(request.placeId)
     
     const surcharge: PostSurchargeRepositoryRequest = {
-        place: request.place,
+        placeId: place.id,
         image: request.image,
         rate: rate,
-        totalAmount: request.totalAmount ?? 0,
-        surchargeAmount: request.surchargeAmount ?? 0,
+        totalAmount: request.totalAmount,
+        surchargeAmount: request.surchargeAmount,
         surchargeStatus: SurchargeStatus.REPORTED 
     }
 
     // Call the repository function
-    return await PostSurchargeRepo(surcharge)
+    const timestamp = await PostSurchargeRepo(surcharge)
+    
+    return {
+      place: place,
+      surcharge: {
+        rate: rate,
+        reportedDate: timestamp,
+        status: SurchargeStatus.REPORTED
+      }
+    }
   } catch (error) {
-      console.error("Error in use case:", error);
-      throw error;
+      throw error
   }
-};
+}

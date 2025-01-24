@@ -1,39 +1,53 @@
-import { customRequest } from "./customRequest/customRequest"
+import { PostSurchargeInterfaceRequest } from "./models/PostSurchargeInterfaceRequest"
+import {
+  PostSurchargeInterfaceResponse,
+  PostSurchargeInterfaceResponseData
+} from "./models/PostSurchargeInterfaceResponse"
 import { postSurchargeUsecase } from "@domain/surcharge"
-import { Response } from "express";
 import { PostSurchargeUsecaseRequest } from "@domain/surcharge"
 
-export const postSurchargeInterface = async (req: customRequest, res: Response): Promise<void> => {
+export const postSurchargeInterface = async (
+  request: PostSurchargeInterfaceRequest, 
+  response: PostSurchargeInterfaceResponse<PostSurchargeInterfaceResponseData>
+) => {
+
   try {
 
-    let { place, image, rate, totalAmount, surchargeAmount } = req.body;
+    let { placeId, image, totalAmount, surchargeAmount } = request.body
+    // Check if the required parameters are provided. If not, return bad request.
 
-    let isRate = false;
-    if(rate === undefined){isRate = false} else isRate = true
-    let isAmount = false;
-    if(totalAmount === undefined ||
-      surchargeAmount === undefined){isAmount = false} else isAmount = true
-    if(!isRate && !isAmount){
-      throw new Error("Insufficient parameters provided for rate calculation.")
+    const isValidRequestBody = placeId !== undefined && image !== undefined && totalAmount !== undefined && surchargeAmount !== undefined
+
+    if (!isValidRequestBody) {
+      response.status(400).send()
+      return
     }
 
+    // Check if the total amount and surcharge amount are not negative
+    if (totalAmount < 0 || surchargeAmount < 0) {
+      response.status(400).send()
+      return
+    }
 
     // Map the incoming data to PostSurchargeUsecaseRequest
     const surcharge: PostSurchargeUsecaseRequest = {
-      place: place,
+      placeId: placeId,
       image: image,
-      rate: rate,
       totalAmount: totalAmount,
       surchargeAmount: surchargeAmount
-    };
+    }
 
     // Call the use case
-    await postSurchargeUsecase(surcharge);
+    const postSurchargeResult = await postSurchargeUsecase(surcharge)
 
     // Respond with success
-    res.status(200).send({ message: "Surcharge successfully posted." });
+    response.status(201).send({
+      place: postSurchargeResult.place,
+      surcharge: postSurchargeResult.surcharge
+    })
+
   } catch (error) {
-    console.error("Error in postSurcharge controller:", error);
-    res.status(500).send({ message: "An error occurred while posting the surcharge." });
+    console.error(error)
+    response.status(500).send()
   }
-};
+}

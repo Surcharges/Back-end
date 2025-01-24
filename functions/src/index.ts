@@ -6,6 +6,7 @@ import { getPlaceInterface, getPlacesInterface } from "@interface/place";
 import { getSurchargeInterface, postSurchargeInterface, getSurchargesInterface } from "@interface/surcharge";
 import { AdminAuth } from "@shared/authentication";
 import { MobileAuth } from "@shared/authentication";
+import { WrappingResponse } from "@shared/middleware";
 
 const cors = require('cors')
 
@@ -38,6 +39,7 @@ exports.admin = onRequest(admin)
 // For Mobile APIs
 const mobile = express()
 
+mobile.use(WrappingResponse)
 mobile.use(MobileAuth)
 
 mobile.get("/place/v1", getPlaceInterface)
