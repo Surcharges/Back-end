@@ -77,6 +77,11 @@ jobs:
           name: lib
           path: functions/lib
 
+      - name: Install Dependencies
+        run: |
+          cd functions
+          npm install
+
       - name: Setup Firebase Tools
         uses: w9jds/setup-firebase@main
         with:
