@@ -3,5 +3,6 @@ export function RateCalculator(
   surchargeAmount: number
 ): number {
   const purchaseAmount = totalAmount - surchargeAmount
-  return Math.round((surchargeAmount / purchaseAmount) * 100)
+  const rate = (surchargeAmount / purchaseAmount) * 100
+  return Number(rate.toFixed(1))
 }
