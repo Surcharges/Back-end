@@ -1,0 +1,80 @@
+name: Release to Production
+
+on:
+  push:
+    branches:
+      - release
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.0
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Generate .env.prod
+        run: |
+          echo "GOOGLE_MAPS_API_KEY=${{ secrets.GOOGLE_MAPS_API_KEY }}" >> .env.prod
+          echo "CORS_ORIGIN=${{ secrets.CORS_ORIGIN }}" >> .env.prod
+          echo "MOBILE_API_KEY_SCHEME=${{ secrets.MOBILE_API_KEY_SCHEME }}" >> .env.prod
+          echo "MOBILE_API_KEY=${{ secrets.MOBILE_API_KEY }}" >> .env.prod
+
+      - name: Build
+        run: |
+          firebase use prod
+          npm run build
+
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@master
+        with: 
+          name: dist
+          path: dist
+
+      - name: Notify Build End
+        if: failure()
+        uses: 8398a7/action-slack@v3
+        with: 
+          status: ${{ job.status }}
+          fields: repo,author,ref,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Download Artifact
+        uses: actions/download-artifact@master
+        with:
+          name: dist
+          path: dist
+
+      - name: Deploy to Firebase Cloud Functions
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only functions
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      
+      - name: Notify Deployment End
+        if: always()
+        uses: 8398a7/action-slack@v3
+        with: 
+          status: ${{ job.status }}
+          fields: repo,author,ref,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
