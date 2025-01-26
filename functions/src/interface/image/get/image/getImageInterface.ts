@@ -12,7 +12,7 @@ export const getImageInterface = async (request: express.Request, response: Resp
 
   try {
     const result = await getImageUsecase({ image: image });
-    console.log("getImageInterface result: ", result.image)
+    // console.log("getImageInterface result: ", result.image)
 
     response.status(200).send({
       image: result.image,
