@@ -69,8 +69,6 @@ jobs:
 
       - name: Deploy to Firebase Cloud Functions
         uses: w9jds/firebase-action@master
-        run: |
-          cd functions
         with:
           args: deploy --only functions
         env:
