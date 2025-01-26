@@ -24,6 +24,12 @@ jobs:
           cd functions
           npm install
 
+      - name: Setup Firebase Tools
+        uses: w9jds/setup-firebase@main
+        with:
+          tools-version: 13.29.1
+          firebase_token: ${{ secrets.FIREBASE_TOKEN }}
+
       - name: Generate .env.prod
         run: |
           cd functions
@@ -33,9 +39,9 @@ jobs:
           echo "MOBILE_API_KEY=${{ secrets.MOBILE_API_KEY }}" >> .env.prod
 
       - name: Select Configuration
-        uses: w9jds/firebase-action@master
-        with:
-          args: use prod
+        run: |
+          cd functions
+          firebase use prod
 
       - name: Build
         run: |
@@ -71,12 +77,14 @@ jobs:
           name: dist
           path: dist
 
-      - name: Deploy to Firebase Cloud Functions
-        uses: w9jds/firebase-action@master
+      - name: Setup Firebase Tools
+        uses: w9jds/setup-firebase@main
         with:
-          args: deploy --only functions
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          tools-version: 13.29.1
+          firebase_token: ${{ secrets.FIREBASE_TOKEN }}
+
+      - name: Deploy to Firebase Cloud Functions
+        run: firebase deploy --only functions
       
       - name: Notify Deployment End
         if: always()
