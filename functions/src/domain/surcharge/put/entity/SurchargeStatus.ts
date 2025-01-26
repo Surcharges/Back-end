@@ -1,5 +1,7 @@
 export enum SurchargeStatus {
     REPORTED = 'REPORTED',
     CONFIRMED = 'CONFIRMED',
-    UNKNOWN = 'UNKNOWN'
+    UNKNOWN = 'UNKNOWN',
+    REJECTED = 'REJECTED',
+    AUTO_GENERATED = 'AUTO_GENERATED'
   }

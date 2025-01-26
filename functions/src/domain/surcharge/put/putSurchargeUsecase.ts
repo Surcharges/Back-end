@@ -6,7 +6,7 @@ import { rateCalculatorHelper } from "../helpers/rateCalculatorHelper";
 
 export const putSurchargeUsecase = async (
   request: PutSurchargeUsecaseRequest
-): Promise<{ id: string; surchargeAmount?: number; totalAmount?: number; rate?: number; surchargeStatus: SurchargeStatus }> => {
+): Promise<{ id: string; surchargeAmount?: number; totalAmount?: number; rate?: number; surchargeStatus: string; action: string }> => {
   let newRate: number | undefined = undefined;
 
   if (request.totalAmount && request.surchargeAmount) {
@@ -19,14 +19,16 @@ export const putSurchargeUsecase = async (
       request.id,
       newRate,
       request.totalAmount,
-      request.surchargeAmount
+      request.surchargeAmount,
+      request.action
     );
   } else {
     return await returnUpdatedSurcharge(
       request.id,
       undefined,
       undefined,
-      undefined
+      undefined,
+      request.action
     );
   }
 };
@@ -35,26 +37,37 @@ async function returnUpdatedSurcharge(
   id: string,
   rate: number | undefined,
   totalAmount: number | undefined,
-  surchargeAmount: number | undefined
+  surchargeAmount: number | undefined,
+  action: string
 ): Promise<{
   id: string;
   surchargeAmount?: number;
   totalAmount?: number;
   rate?: number;
-  surchargeStatus: SurchargeStatus;
+  surchargeStatus: string;
+  action: string
 }> {
+  let status = ''
+  if(action === "CONFIRM"){
+    status = SurchargeStatus.CONFIRMED
+  } else if(action === "REJECT"){
+    status = SurchargeStatus.REJECTED
+  }
   const updatedSurcharge = {
     id,
     surchargeAmount,
     totalAmount,
     rate,
-    surchargeStatus: SurchargeStatus.CONFIRMED,
+    surchargeStatus: status,
+    action: action
   };
 
   console.log(
     "putSurchargeUsecase surchargeAmount and totalAmount:",
     updatedSurcharge.surchargeAmount,
-    updatedSurcharge.totalAmount
+    updatedSurcharge.totalAmount,
+    action,
+    id
   );
 
   await PutSurchargeRepository(updatedSurcharge);

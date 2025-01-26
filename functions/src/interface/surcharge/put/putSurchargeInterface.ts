@@ -4,11 +4,12 @@ import { putSurchargeUsecase } from "@domain/surcharge"
 
 export const putSurchargeInterface = async (req: Request, res: Response): Promise<void> => {
   try {
-    let { id, surchargeAmount, totalAmount } = req.body;
+    let { id, surchargeAmount, totalAmount, action } = req.body;
     const surcharge: PutSurchargeInterfaceRequest = {
       id: id,
       surchargeAmount: surchargeAmount,
-      totalAmount: totalAmount
+      totalAmount: totalAmount,
+      action: action,
     };
     await putSurchargeUsecase(surcharge);
     res.status(200).send({ message: "Surcharge successfully confirmed." });

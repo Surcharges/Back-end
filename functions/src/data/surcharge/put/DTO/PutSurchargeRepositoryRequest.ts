@@ -9,5 +9,5 @@ export type PutSurchargeRepositoryRequest = {
 	rate?: number,
 	surchargeAmount?: number,
 	totalAmount?: number,
-	surchargeStatus: SurchargeStatus
+	surchargeStatus: string
 }

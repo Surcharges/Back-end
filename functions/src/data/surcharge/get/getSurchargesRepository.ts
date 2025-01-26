@@ -108,7 +108,7 @@ async function _GetAllSurcharges(): Promise<GetSurchargesRepositoryResponse[] | 
       })
     );
 
-    console.log('All surcharges fetched successfully:', AllSurcharges);
+    console.log('All surcharges fetched successfully:');
     return AllSurcharges;
   } catch (error) {
     console.error('Error fetching surcharges:', error);
