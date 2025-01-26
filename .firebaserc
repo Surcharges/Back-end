@@ -1,7 +1,7 @@
 {
   "projects": {
     "default": "surcharges",
-    "dev": "surcharges",
+    "dev": "surcharges-dev",
     "prod": "surcharges"
   },
   "targets": {},
