@@ -32,10 +32,14 @@ jobs:
           echo "MOBILE_API_KEY_SCHEME=${{ secrets.MOBILE_API_KEY_SCHEME }}" >> .env.prod
           echo "MOBILE_API_KEY=${{ secrets.MOBILE_API_KEY }}" >> .env.prod
 
+      - name: Select Configuration
+        uses: w9jds/firebase-action@master
+        with:
+          args: use prod
+
       - name: Build
         run: |
           cd functions
-          firebase use prod
           npm run build
 
       - name: Archive Production Artifact
