@@ -51,8 +51,8 @@ jobs:
       - name: Archive Production Artifact
         uses: actions/upload-artifact@master
         with: 
-          name: dist
-          path: dist
+          name: lib
+          path: functions/lib
 
       - name: Notify Build End
         if: failure()
@@ -74,8 +74,8 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@master
         with:
-          name: dist
-          path: dist
+          name: lib
+          path: functions/lib
 
       - name: Setup Firebase Tools
         uses: w9jds/setup-firebase@main
