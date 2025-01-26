@@ -38,11 +38,6 @@ jobs:
           echo "MOBILE_API_KEY_SCHEME=${{ secrets.MOBILE_API_KEY_SCHEME }}" >> .env.prod
           echo "MOBILE_API_KEY=${{ secrets.MOBILE_API_KEY }}" >> .env.prod
 
-      - name: Select Configuration
-        run: |
-          cd functions
-          firebase use prod
-
       - name: Build
         run: |
           cd functions
@@ -87,6 +82,11 @@ jobs:
         with:
           tools-version: 13.29.1
           firebase_token: ${{ secrets.FIREBASE_TOKEN }}
+
+      - name: Select Configuration
+        run: |
+          cd functions
+          firebase use prod
 
       - name: Deploy to Firebase Cloud Functions
         run: firebase deploy --only functions
