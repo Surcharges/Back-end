@@ -11,7 +11,7 @@ import { WrappingResponse } from "@shared/middleware";
 const cors = require('cors')
 
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN,
+  origin: [process.env.CORS_ORIGIN_1, process.env.CORS_ORIGIN_2, process.env.CORS_ORIGIN_3],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }
 
