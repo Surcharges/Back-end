@@ -3,7 +3,7 @@ import { ImageDTO } from "@data/image";
 
 export async function GetImageRepository(image: string): Promise<ImageDTO> {
   try {
-    const imageRef = storage.bucket().file("reported/" + image);
+    const imageRef = storage.bucket().file(image);
     if (!imageRef) {
       console.log('Image does not exist in Firebase Storage');
       return { image: [] }; // Empty Base64 string if image doesn't exist
