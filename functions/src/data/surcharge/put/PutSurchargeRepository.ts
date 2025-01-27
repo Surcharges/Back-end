@@ -32,7 +32,7 @@ export async function PutSurchargeRepository(request: PutSurchargeRepositoryRequ
           const newFileRef = storage.bucket().file(newFolder(surcharge.image, surcharge.surchargeStatus));
           await newFileRef.save(fileBuffer, { contentType: 'image/jpeg' });
           await imageRef.delete();
-          console.log(`Image moved to ${newFileRef} and deleted from the previous location.`);
+          console.log(`Image moved to ${newFileRef.name} and deleted from the previous location.`);
       } catch (error) {
           console.error("An error occurred while moving the image:", error);
       }
