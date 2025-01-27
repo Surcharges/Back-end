@@ -1,7 +1,9 @@
 export enum SurchargeStatus {
   REPORTED = 'REPORTED',
   CONFIRMED = 'CONFIRMED',
-  UNKNOWN = 'UNKNOWN'
+  UNKNOWN = 'UNKNOWN',
+  REJECTED = 'REJECTED',
+  AUTO_GENERATED = 'AUTO_GENERATED'
 }
 
 export type PutSurchargeRepositoryRequest = {
@@ -9,5 +11,6 @@ export type PutSurchargeRepositoryRequest = {
 	rate?: number,
 	surchargeAmount?: number,
 	totalAmount?: number,
-	surchargeStatus: string
+	surchargeStatus: SurchargeStatus,
+  action: string
 }
