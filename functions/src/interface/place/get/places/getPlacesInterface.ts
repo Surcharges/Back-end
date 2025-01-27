@@ -1,5 +1,5 @@
 import express from "express"
-import { getPlacesUsecase } from "@domain/place"
+import { GetPlacesUsecase } from "@domain/place"
 import { Response } from "./model/GetPlacesInterfaceResponse"
 
 export const getPlacesInterface = async (request: express.Request, response: Response) => {
@@ -22,7 +22,7 @@ export const getPlacesInterface = async (request: express.Request, response: Res
   }
 
   try {
-    const places = await getPlacesUsecase({ searchText, nextPageToken, userLocation: userLocation() })
+    const places = await GetPlacesUsecase({ searchText, nextPageToken, userLocation: userLocation() })
 
     response.status(200).send({
       places: places.places.map((place) => {

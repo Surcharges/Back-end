@@ -1,21 +1,35 @@
 import { PlaceDTO } from "../place/DTO/PlaceDTO"
 import { AddressComponentsDTO } from "../place/DTO/AddressComponentsDTO"
 import { GetPlacesRepositoryResponse } from "./DTO/GetPlacesRepositoryResponse"
+import { GetPlacesRepositoryRequest } from "./DTO/GetPlacesRepositoryRequest"
+import { locationRestrictionOfNZ } from "@shared/constants"
 
-export const locationRestrictionOfNZ = {
-  rectangle: {
-    low: {
-      latitude: -47.0,
-      longitude: 166.0,
-    },
-    high: {
-      latitude: -34.0,
-      longitude: 178.0,
-    },
+
+export function GetPlacesRepository(request: GetPlacesRepositoryRequest): Promise<GetPlacesRepositoryResponse>
+export function GetPlacesRepository(placesId: string[]): Promise<GetPlacesRepositoryResponse>
+
+export async function GetPlacesRepository(param: GetPlacesRepositoryRequest | string[]): Promise<GetPlacesRepositoryResponse> {
+  if (Array.isArray(param)) {
+    return await _GetPlacesFromFirestore(param)
+  } else {
+    const request = param as GetPlacesRepositoryRequest
+    return await _GetPlacesFromGoogle(request.searchText, request.nextPageToken, request.userLocation)
   }
 }
 
-export async function GetPlacesRepository(
+async function _GetPlacesFromFirestore(placeIds: string[]): Promise<GetPlacesRepositoryResponse> {
+
+  /* 
+    Here you have to acess to Firestore and get the places by placeIds.
+    Return nextPageToken as undefined.
+  */
+
+  return {
+    places: [],
+  }
+}
+
+async function _GetPlacesFromGoogle(
   searchText: string,
   nextPageToken?: string,
   userLocation?: { latitude: number, longitude: number }
