@@ -4,7 +4,6 @@ import { GetImageRepository } from '@data/image'
 
 export const getImageUsecase = async (request: GetImageUsecaseRequest): Promise<GetImageUsecaseResponse> => {
   const result = await GetImageRepository(request.image);
-  console.log("getImageUsecase result: ", result)
 
   return {
     image: result.image,
