@@ -1,4 +1,4 @@
-name: Release to Production
+name: Deploy to Production
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -30,58 +30,20 @@ jobs:
           tools-version: 13.29.1
           firebase_token: ${{ secrets.FIREBASE_TOKEN }}
 
-      - name: Generate .env.prod
+      - name: Generate .env
         run: |
           cd functions
-          echo "GOOGLE_MAPS_API_KEY=${{ secrets.GOOGLE_MAPS_API_KEY }}" >> .env.prod
-          echo "CORS_ORIGIN=${{ secrets.CORS_ORIGIN }}" >> .env.prod
-          echo "MOBILE_API_KEY_SCHEME=${{ secrets.MOBILE_API_KEY_SCHEME }}" >> .env.prod
-          echo "MOBILE_API_KEY=${{ secrets.MOBILE_API_KEY }}" >> .env.prod
+          echo "GOOGLE_MAPS_API_KEY=${{ secrets.GOOGLE_MAPS_API_KEY }}" >> .env
+          echo "CORS_ORIGIN_1=${{ secrets.CORS_ORIGIN_1 }}" >> .env
+          echo "CORS_ORIGIN_2=${{ secrets.CORS_ORIGIN_2 }}" >> .env
+          echo "CORS_ORIGIN_3=${{ secrets.CORS_ORIGIN_3 }}" >> .env
+          echo "MOBILE_API_KEY_SCHEME=${{ secrets.MOBILE_API_KEY_SCHEME }}" >> .env
+          echo "MOBILE_API_KEY=${{ secrets.MOBILE_API_KEY }}" >> .env
 
       - name: Build
         run: |
           cd functions
           npm run build
-
-      - name: Archive Production Artifact
-        uses: actions/upload-artifact@master
-        with: 
-          name: lib
-          path: functions/lib
-
-      - name: Notify Build End
-        if: failure()
-        uses: 8398a7/action-slack@v3
-        with: 
-          status: ${{ job.status }}
-          fields: repo,author,ref,took
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
-  deploy:
-    name: Deploy
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@master
-
-      - name: Download Artifact
-        uses: actions/download-artifact@master
-        with:
-          name: lib
-          path: functions/lib
-
-      - name: Install Dependencies
-        run: |
-          cd functions
-          npm install
-
-      - name: Setup Firebase Tools
-        uses: w9jds/setup-firebase@main
-        with:
-          tools-version: 13.29.1
-          firebase_token: ${{ secrets.FIREBASE_TOKEN }}
 
       - name: Select Configuration
         run: |
@@ -96,6 +58,6 @@ jobs:
         uses: 8398a7/action-slack@v3
         with: 
           status: ${{ job.status }}
-          fields: repo,author,ref,took
+          fields: repo,author,ref
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
