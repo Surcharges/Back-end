@@ -30,5 +30,7 @@ export type GetPlaceUsecaseResponse = {
   location?: LatLng,
   rate?: number,
   reportedDate?: Timestamp,
+  totalAmount?: number,
+  surchargeAmount?: number,
   surchargeStatus?: SurchargeStatus
 }

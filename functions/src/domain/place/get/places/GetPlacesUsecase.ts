@@ -39,6 +39,7 @@ export async function GetPlacesUsecase(request: GetPlacesUsecaseRequest | string
             : undefined,
           rate: allSurcharges.find((surcharge) => surcharge.id === place.id)?.rate,
           totalAmount: allSurcharges.find((surcharge) => surcharge.id === place.id)?.totalAmount,
+          reportedDate: allSurcharges.find((surcharge) => surcharge.id === place.id)?.reportedDate,
           surchargeAmount: allSurcharges.find((surcharge) => surcharge.id === place.id)?.surchargeAmount,
           surchargeStatus: allSurcharges.find((surcharge) => surcharge.id === place.id)?.surchargeStatus as SurchargeStatus,
         }
