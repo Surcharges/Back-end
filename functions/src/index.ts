@@ -3,7 +3,8 @@ require('module-alias/register')
 import express from "express";
 import { onRequest } from "firebase-functions/v2/https";
 import { getPlaceInterface, getPlacesInterface } from "@interface/place";
-import { getSurchargeInterface, postSurchargeInterface, getSurchargesInterface } from "@interface/surcharge";
+import { getSurchargeInterface, postSurchargeInterface, getSurchargesInterface, putSurchargeInterface } from "@interface/surcharge";
+import { getImageInterface } from "@interface/image";
 import { AdminAuth } from "@shared/authentication";
 import { MobileAuth } from "@shared/authentication";
 import { WrappingResponse } from "@shared/middleware";
@@ -33,7 +34,8 @@ const admin = express()
 admin.use(cors(corsOptions))
 admin.use(AdminAuth)
 admin.get("/surcharges", getSurchargesInterface)
-//admin.put("/surcharge", putSurchargeInterface)
+admin.put("/surcharge", putSurchargeInterface)
+admin.get("/image", getImageInterface)
 exports.admin = onRequest(admin)
 
 // For Mobile APIs

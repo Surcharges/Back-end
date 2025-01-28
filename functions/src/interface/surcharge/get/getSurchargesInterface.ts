@@ -1,4 +1,4 @@
-import { getSurchargesUsecase } from "@domain/surcharge";
+import { getSurchargesUsecase } from "@domain/surcharge"
 import { Response, Request } from "express";
 
 export const getSurchargesInterface = async (req: Request, res: Response) => {
@@ -6,6 +6,8 @@ export const getSurchargesInterface = async (req: Request, res: Response) => {
     const surcharges = await getSurchargesUsecase();
     res.status(200).send(
       surcharges.map((surcharge) => ({
+        id: surcharge.id,
+        image: surcharge.image,
         placeInformation: surcharge.placeInformation,
         rate: surcharge.rate,
         reportedDate: surcharge.reportedDate,
