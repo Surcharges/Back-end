@@ -6,5 +6,5 @@ export type Place = {
   id: string,
   displayName: LocalizedText,
   addressComponents: AddressComponents[],
-  location?: LatLng
+  location?: LatLng | null
 }
