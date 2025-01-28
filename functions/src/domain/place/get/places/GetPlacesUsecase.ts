@@ -37,6 +37,7 @@ export async function GetPlacesUsecase(request: GetPlacesUsecaseRequest | string
               longitude: place.location.longitude,
             }
             : undefined,
+          image: allSurcharges.find((surcharge) => surcharge.id === place.id)?.image,
           rate: allSurcharges.find((surcharge) => surcharge.id === place.id)?.rate,
           totalAmount: allSurcharges.find((surcharge) => surcharge.id === place.id)?.totalAmount,
           reportedDate: allSurcharges.find((surcharge) => surcharge.id === place.id)?.reportedDate,

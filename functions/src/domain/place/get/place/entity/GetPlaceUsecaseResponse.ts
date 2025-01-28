@@ -28,6 +28,7 @@ export type GetPlaceUsecaseResponse = {
   displayName: displayName,
   addressComponents: addressComponents[],
   location?: LatLng,
+  image?: string,
   rate?: number,
   reportedDate?: Timestamp,
   totalAmount?: number,

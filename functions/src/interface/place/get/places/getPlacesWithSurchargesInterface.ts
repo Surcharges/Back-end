@@ -27,11 +27,12 @@ export const getPlacesWithSurchargesInterface = async (request: express.Request,
             latitude: place.location.latitude,
             longitude: place.location.longitude
           } : undefined,
+          image: place.image,
           surchargeStatus: place.surchargeStatus,
           totalAmount: place.totalAmount,
           surchargeAmount: place.surchargeAmount,
           reportedDate: place.reportedDate,
-          surchargeRate: place.rate
+          rate: place.rate
         }
       }),
       nextPageToken: places.nextPageToken
