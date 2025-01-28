@@ -2,7 +2,7 @@ require('module-alias/register')
 
 import express from "express";
 import { onRequest } from "firebase-functions/v2/https";
-import { getPlaceInterface, getPlacesInterface } from "@interface/place";
+import { getPlaceInterface, getPlacesInterface, getPlacesWithSurchargesInterface } from "@interface/place";
 import { getSurchargeInterface, postSurchargeInterface, getSurchargesInterface, putSurchargeInterface } from "@interface/surcharge";
 import { getImageInterface } from "@interface/image";
 import { AdminAuth } from "@shared/authentication";
@@ -36,6 +36,7 @@ admin.use(AdminAuth)
 admin.get("/surcharges", getSurchargesInterface)
 admin.put("/surcharge", putSurchargeInterface)
 admin.get("/image", getImageInterface)
+admin.get("/places", getPlacesWithSurchargesInterface);
 exports.admin = onRequest(admin)
 
 // For Mobile APIs
