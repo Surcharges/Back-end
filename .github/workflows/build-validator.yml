@@ -2,6 +2,7 @@ name: Validate Build
 
 on:
   pull_reuqest:
+    types: [opened, synchronize, reopened]
     
 jobs:
   build:
