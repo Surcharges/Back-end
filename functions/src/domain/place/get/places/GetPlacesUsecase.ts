@@ -4,56 +4,79 @@ import { GetPlacesUsecaseResponse } from "./entity/GetPlacesUsecaseResponse"
 import { GetPlacesRepository } from "@data/place"
 import { locationRestrictionOfNZ } from "@shared/constants"
 
-export function GetPlacesUsecase(request: GetPlacesUsecaseRequest): Promise<GetPlacesUsecaseResponse>
-export function GetPlacesUsecase(placeIds: string[]): Promise<GetPlacesUsecaseResponse>
+export async function GetPlacesUsecase(request: GetPlacesUsecaseRequest | string[]): Promise<GetPlacesUsecaseResponse> {
+  let resultPlaces;
 
-export async function GetPlacesUsecase(param: GetPlacesUsecaseRequest | string[]): Promise<GetPlacesUsecaseResponse> {
+  if (Array.isArray(request)) {
 
-  if (Array.isArray(param)) {
-    return await _GetPlacesByPlaceId(param)
+    try {
+      const allSurcharges = await GetSurchargesRepository({})
+      const allSurchargesIds = allSurcharges.map((surcharge) => {
+        return surcharge.id
+      })
+      resultPlaces = await GetPlacesRepository(allSurchargesIds)
+
+      // const resultSurcharges = await GetSurchargesRepository(resultPlaceIds)
+  
+      const placesWithSurcharges = resultPlaces.places.map((place) => {
+        return {
+          id: place.id,
+          displayName: {
+            text: place.displayName.text,
+            languageCode: place.displayName.languageCode,
+          },
+          addressComponents: place.addressComponents.map((component) => ({
+            longText: component.longText,
+            shortText: component.shortText,
+            types: component.types,
+            languageCode: component.languageCode,
+          })),
+          location: place.location
+            ? {
+              latitude: place.location.latitude,
+              longitude: place.location.longitude,
+            }
+            : undefined,
+          image: allSurcharges.find((surcharge) => surcharge.id === place.id)?.image,
+          rate: allSurcharges.find((surcharge) => surcharge.id === place.id)?.rate,
+          totalAmount: allSurcharges.find((surcharge) => surcharge.id === place.id)?.totalAmount,
+          reportedDate: allSurcharges.find((surcharge) => surcharge.id === place.id)?.reportedDate,
+          surchargeAmount: allSurcharges.find((surcharge) => surcharge.id === place.id)?.surchargeAmount,
+          surchargeStatus: allSurcharges.find((surcharge) => surcharge.id === place.id)?.surchargeStatus as SurchargeStatus,
+        }
+      })
+  
+      return {
+        places: placesWithSurcharges,
+        nextPageToken: undefined,
+      }
+  
+    } catch (error) {
+      throw error
+    }
+
   } else {
-    return await _GetPlacesByRequest(param)
-  }
 
-}
-
-async function _GetPlacesByPlaceId(placeId: string[]): Promise<GetPlacesUsecaseResponse> {
-
-  /*
-    I think you can start here, and of course you need a repository for getting places by placeId
-    I made a snippet for you, and it can be found in GetPlacesRepository.ts
-    Return nextPageToken as undefined.
-  */
-
-  return {
-    places: [],
-    nextPageToken: undefined,
-  }
-}
-
-async function _GetPlacesByRequest(request: GetPlacesUsecaseRequest): Promise<GetPlacesUsecaseResponse> {
-  if (request.userLocation) {
-    if (!isPointInRectangle(request.userLocation, locationRestrictionOfNZ)) {
-      throw new Error("User location is out of New Zealand")
+    if (request.userLocation) {
+      if (!isPointInRectangle(request.userLocation, locationRestrictionOfNZ)) {
+        throw new Error("User location is out of New Zealand")
+      }
     }
+    resultPlaces = await GetPlacesRepository(
+      {
+        searchText: request.searchText,
+        nextPageToken: request.nextPageToken,
+        userLocation: request.userLocation,
+      }
+    )
   }
-
-  const resultPlaces = await GetPlacesRepository(
-    {
-      searchText: request.searchText,
-      nextPageToken: request.nextPageToken,
-      userLocation: request.userLocation,
-    }
-  )
 
   const resultPlaceIds = resultPlaces.places.map((place) => {
     return place.id
   })
 
   try {
-
     const resultSurcharges = await GetSurchargesRepository(resultPlaceIds)
-
     const placesWithSurcharges = resultPlaces.places.map((place) => {
       return {
         id: place.id,

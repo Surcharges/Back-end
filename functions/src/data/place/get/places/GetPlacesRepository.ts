@@ -3,10 +3,10 @@ import { AddressComponentsDTO } from "../place/DTO/AddressComponentsDTO"
 import { GetPlacesRepositoryResponse } from "./DTO/GetPlacesRepositoryResponse"
 import { GetPlacesRepositoryRequest } from "./DTO/GetPlacesRepositoryRequest"
 import { locationRestrictionOfNZ } from "@shared/constants"
-
+import { database } from "@data/firebase"
 
 export function GetPlacesRepository(request: GetPlacesRepositoryRequest): Promise<GetPlacesRepositoryResponse>
-export function GetPlacesRepository(placesId: string[]): Promise<GetPlacesRepositoryResponse>
+export function GetPlacesRepository(placesIds: string[]): Promise<GetPlacesRepositoryResponse>
 
 export async function GetPlacesRepository(param: GetPlacesRepositoryRequest | string[]): Promise<GetPlacesRepositoryResponse> {
   if (Array.isArray(param)) {
@@ -17,15 +17,44 @@ export async function GetPlacesRepository(param: GetPlacesRepositoryRequest | st
   }
 }
 
-async function _GetPlacesFromFirestore(placeIds: string[]): Promise<GetPlacesRepositoryResponse> {
+async function _GetPlacesFromFirestore(
+  placesIds: string[]
+): Promise<GetPlacesRepositoryResponse> {
+  try {
+    const placesSnapshot = await database
+      .collection('places')
+      .where("id", "in", placesIds)
+      .get();
 
-  /* 
-    Here you have to acess to Firestore and get the places by placeIds.
-    Return nextPageToken as undefined.
-  */
+    if (placesSnapshot.empty) {
+      console.log("Places data are undefined for the given places IDs.");
+      return { places: [], nextPageToken: undefined };
+    } else {
+      const matchedPlaces = placesSnapshot.docs.map((doc) => {
+        const data = doc.data() as PlaceDTO;
+        return {
+          id: data.id,
+          displayName: {
+            text: data.displayName.text,
+            languageCode: data.displayName.languageCode,
+          },
+          addressComponents: data.addressComponents.map((component: AddressComponentsDTO) => {
+            return {
+              longText: component.longText,
+              shortText: component.shortText,
+              types: component.types,
+              languageCode: data.displayName.languageCode,
+            }
+          }),
+          location: null,
+        };
+      });
 
-  return {
-    places: [],
+      return { places: matchedPlaces, nextPageToken: undefined };
+    }
+  } catch (error) {
+    console.error("Error fetching places:", error);
+    throw error;
   }
 }
 

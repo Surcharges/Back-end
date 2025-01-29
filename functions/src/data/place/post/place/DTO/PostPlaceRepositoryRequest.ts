@@ -19,5 +19,5 @@ export interface PostPlaceRepositoryRequest {
   id: string;
   displayName: displayName,
   addressComponents: AddressComponentsDTO[],
-  location: LatLngDTO
+  location: LatLngDTO | null
 }
