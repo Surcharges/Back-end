@@ -8,11 +8,18 @@ export const AdminAuth = async (
   next: NextFunction
 ) => {
 
-  const idToken = request.headers.authorization
+  const authorization = request.headers.authorization
 
-  if (!idToken) {
-    response.status(400).send({ message: 'Bad request' })
+  if (!authorization) {
+    response.status(401).send()
     return 
+  }
+
+  const [scheme, idToken] = authorization.split(' ')
+
+  if (scheme !== 'Bearer') {
+    response.status(401).send()
+    return
   }
 
   try {
