@@ -20,7 +20,9 @@ type addressComponents = {
 export enum SurchargeStatus{
   REPORTED = 'REPORTED',
   CONFIRMED = 'CONFIRMED',
-  UNKNOWN = 'UNKNOWN'
+  UNKNOWN = 'UNKNOWN',
+  AUTO_GENERATED = 'AUTO_GENERATED',
+  REJECTED = 'REJECTED'
 }
 
 export type GetPlaceUsecaseResponse = {
