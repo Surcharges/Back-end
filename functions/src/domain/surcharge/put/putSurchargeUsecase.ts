@@ -11,7 +11,6 @@ export const putSurchargeUsecase = async (
 
   if (request.totalAmount && request.surchargeAmount) {
     newRate = rateCalculatorHelper(
-      undefined,
       request.totalAmount,
       request.surchargeAmount
     );
