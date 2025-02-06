@@ -18,7 +18,7 @@ export async function GetPlacesUsecase(request: GetPlacesUsecaseRequest | string
       resultPlaces = await GetPlacesRepository(allSurchargesIds)
 
       // const resultSurcharges = await GetSurchargesRepository(resultPlaceIds)
-  
+
       const placesWithSurcharges = resultPlaces.places.map((place) => {
         return {
           id: place.id,
@@ -46,12 +46,12 @@ export async function GetPlacesUsecase(request: GetPlacesUsecaseRequest | string
           surchargeStatus: allSurcharges.find((surcharge) => surcharge.id === place.id)?.surchargeStatus as SurchargeStatus,
         }
       })
-  
+
       return {
         places: placesWithSurcharges,
         nextPageToken: undefined,
       }
-  
+
     } catch (error) {
       throw error
     }
@@ -77,19 +77,26 @@ export async function GetPlacesUsecase(request: GetPlacesUsecaseRequest | string
   })
 
   try {
+    
     const resultSurcharges = await GetSurchargesRepository(resultPlaceIds)
     const franchisesNames = await GetFranchiseRepository()
 
     const placesWithSurcharges = resultPlaces.places.map((place) => {
-      let name = place.displayName.text
+      
+      const name = place.displayName.text
+      
       let rate = resultSurcharges.find((surcharge) => surcharge.id === place.id)?.rate
-      let status = resultSurcharges.find((surcharge) => surcharge.id === place.id)?.surchargeStatus as SurchargeStatus
+      let status = resultSurcharges.find((surcharge) => surcharge.id === place.id)?.surchargeStatus as SurchargeStatus ?? SurchargeStatus.UNKNOWN
+      
       franchisesNames.forEach(element => {
-        if(name.toLowerCase().includes(element)){
-          status = SurchargeStatus.AUTO_GENERATED
-          rate = 0.0
+        if (status === SurchargeStatus.UNKNOWN) {
+          if(name.toLowerCase().includes(element)){
+            status = SurchargeStatus.AUTO_GENERATED
+            rate = 0.0
+          }
         }
-      });
+      })
+
       return {
         id: place.id,
         displayName: {

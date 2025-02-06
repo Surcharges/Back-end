@@ -10,15 +10,19 @@ export const getPlaceUsecase = async (request: GetPlaceUsecaseRequest): Promise<
   const surchargeData = await GetSurchargesRepository(request.id);
   const franchisesNames = await GetFranchiseRepository()
   
-  let name = result.displayName.text
+  const name = result.displayName.text
   let rate = surchargeData?.rate ?? undefined
   let status = surchargeData?.surchargeStatus ?? SurchargeStatus.UNKNOWN
+  
   franchisesNames.forEach(element => {
-    if(name.toLowerCase().includes(element)){
-      status = SurchargeStatus.AUTO_GENERATED
-      rate = 0.0
+    if (status === SurchargeStatus.UNKNOWN) {
+      if(name.toLowerCase().includes(element)){
+        status = SurchargeStatus.AUTO_GENERATED
+        rate = 0.0
+      }
     }
-  });
+  })
+
   return {
     id: result.id,
     displayName: {
