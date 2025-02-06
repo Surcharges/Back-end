@@ -78,8 +78,9 @@ export async function GetPlacesUsecase(request: GetPlacesUsecaseRequest | string
 
   try {
     
-    const resultSurcharges = await GetSurchargesRepository(resultPlaceIds)
-    const franchisesNames = await GetFranchiseRepository()
+    const [resultSurcharges, franchisesNames] = await Promise.all(
+      [GetSurchargesRepository(resultPlaceIds), GetFranchiseRepository()]
+    )
 
     const placesWithSurcharges = resultPlaces.places.map((place) => {
       

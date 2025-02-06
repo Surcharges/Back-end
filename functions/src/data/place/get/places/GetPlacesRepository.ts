@@ -129,9 +129,7 @@ async function _GetPlacesFromGoogle(
 
     }
 
-    const data = await response.json()
-
-    throw new Error(data)
+    throw new Error(response.statusText)
 
   } catch (error) {
     throw error

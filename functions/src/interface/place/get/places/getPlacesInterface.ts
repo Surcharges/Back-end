@@ -52,12 +52,15 @@ export const getPlacesInterface = async (request: express.Request, response: Res
     })
 
   } catch (error: unknown) {
+    
     if (error instanceof Error) {
       if (error.message === "User location is out of New Zealand") {
         response.status(403).send({ message: error.message })
         return
       }
     }
-    response.status(500).send({ message: error })
+    
+    response.status(404).send()
+
   }
 }
