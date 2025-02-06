@@ -1,0 +1,1 @@
+export { locationRestrictionOfNZ } from "./LocationRestrictions"

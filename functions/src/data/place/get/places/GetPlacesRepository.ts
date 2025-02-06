@@ -1,21 +1,64 @@
 import { PlaceDTO } from "../place/DTO/PlaceDTO"
 import { AddressComponentsDTO } from "../place/DTO/AddressComponentsDTO"
 import { GetPlacesRepositoryResponse } from "./DTO/GetPlacesRepositoryResponse"
+import { GetPlacesRepositoryRequest } from "./DTO/GetPlacesRepositoryRequest"
+import { locationRestrictionOfNZ } from "@shared/constants"
+import { database } from "@data/firebase"
 
-export const locationRestrictionOfNZ = {
-  rectangle: {
-    low: {
-      latitude: -47.0,
-      longitude: 166.0,
-    },
-    high: {
-      latitude: -34.0,
-      longitude: 178.0,
-    },
+export function GetPlacesRepository(request: GetPlacesRepositoryRequest): Promise<GetPlacesRepositoryResponse>
+export function GetPlacesRepository(placesIds: string[]): Promise<GetPlacesRepositoryResponse>
+
+export async function GetPlacesRepository(param: GetPlacesRepositoryRequest | string[]): Promise<GetPlacesRepositoryResponse> {
+  if (Array.isArray(param)) {
+    return await _GetPlacesFromFirestore(param)
+  } else {
+    const request = param as GetPlacesRepositoryRequest
+    return await _GetPlacesFromGoogle(request.searchText, request.nextPageToken, request.userLocation)
   }
 }
 
-export async function GetPlacesRepository(
+async function _GetPlacesFromFirestore(
+  placesIds: string[]
+): Promise<GetPlacesRepositoryResponse> {
+  try {
+    const placesSnapshot = await database
+      .collection('places')
+      .where("id", "in", placesIds)
+      .get();
+
+    if (placesSnapshot.empty) {
+      console.log("Places data are undefined for the given places IDs.");
+      return { places: [], nextPageToken: undefined };
+    } else {
+      const matchedPlaces = placesSnapshot.docs.map((doc) => {
+        const data = doc.data() as PlaceDTO;
+        return {
+          id: data.id,
+          displayName: {
+            text: data.displayName.text,
+            languageCode: data.displayName.languageCode,
+          },
+          addressComponents: data.addressComponents.map((component: AddressComponentsDTO) => {
+            return {
+              longText: component.longText,
+              shortText: component.shortText,
+              types: component.types,
+              languageCode: data.displayName.languageCode,
+            }
+          }),
+          location: null,
+        };
+      });
+
+      return { places: matchedPlaces, nextPageToken: undefined };
+    }
+  } catch (error) {
+    console.error("Error fetching places:", error);
+    throw error;
+  }
+}
+
+async function _GetPlacesFromGoogle(
   searchText: string,
   nextPageToken?: string,
   userLocation?: { latitude: number, longitude: number }
@@ -86,9 +129,7 @@ export async function GetPlacesRepository(
 
     }
 
-    const data = await response.json()
-
-    throw new Error(data)
+    throw new Error(response.statusText)
 
   } catch (error) {
     throw error
