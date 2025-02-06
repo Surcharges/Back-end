@@ -37,7 +37,6 @@ async function _GetSurcharge(placeId: string): Promise<GetSurchargesRepositoryRe
         surchargeAmount: surcharge.surchargeAmount,
         surchargeStatus: surcharge.surchargeStatus
       };
-      console.log("Surcharge fetched successfully:", result);
       return result;
     }
   } catch (error) {

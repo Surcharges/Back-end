@@ -3,10 +3,25 @@ import { GetPlaceUsecaseRequest } from "./entity/GetPlaceUsecaseRequest";
 import { GetPlaceUsecaseResponse } from "./entity/GetPlaceUsecaseResponse";
 import { GetSurchargesRepository } from '@data/surcharge'
 import { SurchargeStatus } from "@data/surcharge"
+import { GetFranchiseRepository } from "@data/franchise";
 
 export const getPlaceUsecase = async (request: GetPlaceUsecaseRequest): Promise<GetPlaceUsecaseResponse> => {
   const result = await GetPlaceRepository(request.id);
   const surchargeData = await GetSurchargesRepository(request.id);
+  const franchisesNames = await GetFranchiseRepository()
+  
+  const name = result.displayName.text
+  let rate = surchargeData?.rate ?? undefined
+  let status = surchargeData?.surchargeStatus ?? SurchargeStatus.UNKNOWN
+  
+  franchisesNames.forEach(element => {
+    if (status === SurchargeStatus.UNKNOWN) {
+      if(name.toLowerCase().includes(element)){
+        status = SurchargeStatus.AUTO_GENERATED
+        rate = 0.0
+      }
+    }
+  })
 
   return {
     id: result.id,
@@ -24,8 +39,8 @@ export const getPlaceUsecase = async (request: GetPlaceUsecaseRequest): Promise<
       latitude: result.location?.latitude ?? 0,
       longitude: result.location?.longitude ?? 0,
     },
-    rate: surchargeData?.rate ?? undefined, 
+    rate: rate, 
     reportedDate: surchargeData?.reportedDate ?? undefined, // Default to 0 if reportedDate is undefined
-    surchargeStatus: surchargeData?.surchargeStatus ?? SurchargeStatus.UNKNOWN,
+    surchargeStatus: status,
   };
 };
